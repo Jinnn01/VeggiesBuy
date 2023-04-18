@@ -49,7 +49,6 @@ export default function App() {
               iconName = focused ? 'camera' : 'camera';
             }
 
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: '#19aa5c', 
