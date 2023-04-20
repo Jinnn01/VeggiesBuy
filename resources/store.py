@@ -2,8 +2,10 @@ import uuid
 from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-
-from schemas import StoreSchema
+from db import db
+from models import StoreModel
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from schemas1 import StoreSchema
 
 blp = Blueprint("store", __name__, description="Operation on stores")
 
@@ -13,18 +15,13 @@ class Stores(MethodView):
     # get a store
     @blp.response(200, StoreSchema)
     def get(self, store_id):
-        try:
-            return stores[store_id]
-        except KeyError:
-            abort(404, message="Store not found")
-
+        store = StoreModel.query.get_or_404(store_id)
+        return store
     # delete a store
+
     def delete(self, store_id):
-        try:
-            del stores[store_id]
-            return {"message": "store deleted"}
-        except KeyError:
-            abort(404, message="Store not found.")
+        store = StoreModel.query.get_or_404(store_id)
+        raise NotImplementedError("Deleting a store is not implemented")
 
 
 @blp.route("/store")
@@ -33,27 +30,18 @@ class StoreList(MethodView):
     @blp.arguments(StoreSchema)
     @blp.response(200, StoreSchema)
     def post(self, store_data):
-        # get data from user input: input a new store
-        # store_data = request.get_json()
+        Store = StoreModel(**store_data)
+        try:
+            # not in db yet
+            db.session.add(Store)
+            # in the db
+            db.session.commit()
+        except IntegrityError:
+            abort(400, message="A store with that name already exists")
+        except SQLAlchemyError:
+            abort(500, message="An error occurred while inserting a item")
 
-        # name must be provided
-        # if "name" not in store_data:
-        #     abort(
-        #         400,
-        #         message="Bad request. Ensure 'name' is included in the JSON payload."
-        #     )
-        # check store already exist or not
-        for store in stores.values():
-            if store_data["name"] == store["name"]:
-                abort(400, message="Store already exists")
-        # set store a unique id
-        store_id = uuid.uuid4().hex
-        # stores = { sid: new_store }
-        new_store = {**store_data, "sid": store_id}
-        # add new store to existing stores list
-        stores[store_id] = new_store
-        # 201, i acept the data and create a store
-        return new_store
+        return Store
 
     @blp.response(200, StoreSchema(many=True))
     def get(self):

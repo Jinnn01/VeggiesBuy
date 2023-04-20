@@ -4,7 +4,7 @@ from db import db
 # mapping between row in a table to a python class
 class ItemModel(db.Model):
     # use a table called items
-    __tablename__ = "Items"
+    __tablename__ = "items"
     # columns should be in this table
     vid = db.Column(db.Integer, primary_key=True)
     # can not insert null value as a name, unique = True => items have different name, if there is no unique, means, multiplate item name can be the same
@@ -12,7 +12,7 @@ class ItemModel(db.Model):
     price = db.Column(db.Float(precision=2), unique=False, nullable=False)
     # store id as a foreignkey
     sid = db.Column(db.Integer, db.ForeignKey(
-        "Stores.sid"), unique=False, nullable=False)
+        "stores.sid"), unique=False, nullable=False)
 
     # store variable with storemodel object, whose id will match the foreignkey
     # link item with stores
@@ -21,4 +21,4 @@ class ItemModel(db.Model):
     # TODO:1.the time of inserting price
     # updateTime = db.Column(db.Datetime, nullable=False)
     # TODO:2. description of veggies
-    vdescr = db.Column(db.String, nullable=True)
+    # vdescr = db.Column(db.String, nullable=True)
