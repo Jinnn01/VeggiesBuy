@@ -1,16 +1,23 @@
-# from db import db
+from db import db
 
 
-# # mapping between row in a table to a python class
-# class UploadModel(db.Model):
-#     # use a table called items
-#     __tablename__ = "Upload"
+class UploadModel(db.Model):
+    # use a table called items
+    __tablename__ = "upload"
 
-#     userid = db.Column(db.Integer, primary_key=True)
-#     vname = db.Column(db.String(80), unique=False, nullable=False)
-#     sname = db.Column(db.String(80), unique=False, nullable=False)
-    
-
+    uploadid = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.ForeignKey(
+        "users.uid"), unique=False, nullable=False)
+    uname = db.Column(db.String(80), unique=False, nullable=False)
+    vid = db.Column(db.ForeignKey(
+        "items.vid"), unique=False, nullable=False)
+    sid = db.Column(db.ForeignKey(
+        "stores.sid"), unique=False, nullable=False)
+    # insertTime = db.Column(db.TIMESTAMP)
 #     # relationship with items, link store with items
-#     items = db.relationship(
-#         "ItemModel", back_populates="stores", lazy="dynamic")
+    # upload = db.relationship(
+    #     "StoreModel", back_populates="stores", lazy="dynamic")
+    # upload = db.relationship(
+    #      "ItemModel", back_populates="items", lazy="dynamic")
+    # upload = db.relationship(
+    #     "UserModel", back_populates="users", lazy="dynamic")

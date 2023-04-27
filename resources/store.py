@@ -1,5 +1,5 @@
 import uuid
-from flask import request
+# from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from db import db
@@ -10,17 +10,17 @@ from schemas1 import StoreSchema
 blp = Blueprint("store", __name__, description="Operation on stores")
 
 
-@blp.route("/store/<string:store_id>")
+@blp.route("/store/<string:sid>")
 class Stores(MethodView):
     # get a store
     @blp.response(200, StoreSchema)
-    def get(self, store_id):
-        store = StoreModel.query.get_or_404(store_id)
+    def get(self, sid):
+        store = StoreModel.query.get_or_404(sid)
         return store
     # delete a store
 
-    def delete(self, store_id):
-        store = StoreModel.query.get_or_404(store_id)
+    def delete(self, sid):
+        store = StoreModel.query.get_or_404(sid)
         raise NotImplementedError("Deleting a store is not implemented")
 
 
@@ -38,8 +38,6 @@ class StoreList(MethodView):
             db.session.commit()
         except IntegrityError:
             abort(400, message="A store with that name already exists")
-        except SQLAlchemyError:
-            abort(500, message="An error occurred while inserting a item")
 
         return Store
 

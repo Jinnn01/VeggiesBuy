@@ -9,7 +9,7 @@ class StoreModel(db.Model):
     sid = db.Column(db.Integer, primary_key=True)
     sname = db.Column(db.String(80), unique=False, nullable=False)
     # TODO: Store location or phone number
-    # saddress = db.Column(db.String, nullable=False)
+    saddress = db.Column(db.String, nullable=False)
 
     # relationship with items, link store with items
     items = db.relationship(

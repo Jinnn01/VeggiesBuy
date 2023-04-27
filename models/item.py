@@ -13,12 +13,10 @@ class ItemModel(db.Model):
     # store id as a foreignkey
     sid = db.Column(db.Integer, db.ForeignKey(
         "stores.sid"), unique=False, nullable=False)
-
     # store variable with storemodel object, whose id will match the foreignkey
     # link item with stores
     stores = db.relationship("StoreModel", back_populates="items")
-
     # TODO:1.the time of inserting price
-    # updateTime = db.Column(db.Datetime, nullable=False)
+    # updateTime = db.Column(db.TIMESTAMP, nullable=False)
     # TODO:2. description of veggies
-    # vdescr = db.Column(db.String, nullable=True)
+    vdescr = db.Column(db.String, nullable=True)

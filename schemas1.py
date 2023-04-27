@@ -7,12 +7,13 @@ class PlainItemSchema(Schema):
     # we need data from user by JSON file, those data will be validated
     vname = fields.Str(required=True)
     price = fields.Float(required=True)
-    # sid = fields.Str(required=True)
+    sid = fields.Str(required=True)
 
 
 class PlainStoreSchema(Schema):
     sid = fields.Int(dump_only=True)
     sname = fields.Str(required=True)
+    saddress = fields.Str()
 
 
 class ItemSchema(PlainItemSchema):
@@ -30,3 +31,27 @@ class ItemUpdateSchema(Schema):
 
 class StoreSchema(PlainStoreSchema):
     items = fields.List(fields.Nested(PlainItemSchema()), dump_only=True)
+
+
+# Upload & User schema
+class UserSchema(Schema):
+    # user can not access the item id
+    uid = fields.Int(dump_only=True)
+    # we need data from user by JSON file, those data will be validated
+    uname = fields.Str(required=True)
+    email = fields.Str(required=True)
+
+
+# class UploadSchema(Schema):
+#     uploadid = fields.Int(dump_only=True)
+    # insertTime = fields.DateTime(dump_only=True)
+
+
+# class UploadSchema(PlainUploadSchema):
+    # uid = fields.Int(required=True, load_only=True)
+    # vid = fields.Int(required=True, load_only=True)
+    # sid = fields.Int(required=True, load_only=True)
+
+
+# class UserSchema(PlainUserSchema):
+#     uploads = fields.List(fields.Nested(PlainUploadSchema()), dump_only=True)
