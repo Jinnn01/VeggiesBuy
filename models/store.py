@@ -12,5 +12,6 @@ class StoreModel(db.Model):
     saddress = db.Column(db.String, nullable=False)
 
     # relationship with items, link store with items
+    # if store is deleted, then all the items will be deleted
     items = db.relationship(
-        "ItemModel", back_populates="stores", lazy="dynamic")
+        "ItemModel", back_populates="stores", lazy="dynamic", cascade="all,delete")

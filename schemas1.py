@@ -6,6 +6,7 @@ class PlainItemSchema(Schema):
     vid = fields.Int(dump_only=True)
     # we need data from user by JSON file, those data will be validated
     vname = fields.Str(required=True)
+    vdescr = fields.Str()
     price = fields.Float(required=True)
     sid = fields.Str(required=True)
 
@@ -27,6 +28,7 @@ class ItemUpdateSchema(Schema):
     # only price and name
     price = fields.Float()
     vname = fields.Str()
+    sid = fields.Int()
 
 
 class StoreSchema(PlainStoreSchema):
@@ -39,7 +41,7 @@ class UserSchema(Schema):
     uid = fields.Int(dump_only=True)
     # we need data from user by JSON file, those data will be validated
     uname = fields.Str(required=True)
-    email = fields.Str(required=True)
+    email = fields.Email(required=True)
 
 
 # class UploadSchema(Schema):

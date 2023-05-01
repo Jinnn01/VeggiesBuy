@@ -19,8 +19,33 @@ class Users(MethodView):
         user = UserModel.query.get_or_404(uid)
         return user
 
+    # delete a user
+    def delete(self, uid):
+        user = UserModel.query.get_or_404(uid)
+        db.session.delete(user)
+        db.session.commit()
+        return {"message": "User deleted"}
 
-@blp.route("/upload")
+    # update user info
+    # @blp.arguments(ItemUpdateSchema)
+    # @blp.response(200, ItemSchema)
+    # # update an item, item_data from input
+    # def put(self, item_data, item_id):
+    #     item = ItemModel.query.get(item_id)
+    #     if item:
+    #         # what if the item does not exist?
+    #         # if exist, update; if not create it
+    #         item.price = item_data["price"]
+    #     else:
+    #         # item = ItemModel(**item_data)
+    #         item = ItemModel(vid=item_id, **item_data)
+    #         # ; not working, set the
+
+    #     db.session.add(item)
+    #     db.session.commit()
+
+
+@blp.route("/user")
 class UserList(MethodView):
     # create a store
     @blp.arguments(UserSchema)
@@ -36,3 +61,8 @@ class UserList(MethodView):
         # abort(400, message="A store with that name already exists")
 
         return user
+
+    @blp.response(200, UserSchema(many=True))
+    def get(self):
+        # gey all user info
+        return UserModel.query.all()

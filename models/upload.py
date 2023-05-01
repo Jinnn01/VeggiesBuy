@@ -4,11 +4,9 @@ from db import db
 class UploadModel(db.Model):
     # use a table called items
     __tablename__ = "upload"
-
     uploadid = db.Column(db.Integer, primary_key=True)
     uid = db.Column(db.ForeignKey(
         "users.uid"), unique=False, nullable=False)
-    uname = db.Column(db.String(80), unique=False, nullable=False)
     vid = db.Column(db.ForeignKey(
         "items.vid"), unique=False, nullable=False)
     sid = db.Column(db.ForeignKey(
