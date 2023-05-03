@@ -4,6 +4,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from models import ItemModel
 from db import db
+from sqlalchemy import select
 
 from sqlalchemy.exc import SQLAlchemyError
 from schemas1 import ItemSchema, ItemUpdateSchema
@@ -70,3 +71,17 @@ class itemlist(MethodView):
     # get item list
     def get(self):
         return ItemModel.query.all()
+
+
+# test get item name return value
+@blp.route("/item/<string:vname>")
+class item(MethodView):
+    @blp.response(200, ItemSchema(many=True))
+    def get(self, vname):
+        # Base on the item name to retrieve data, item name is a *unique field*
+        # not found return 404 error
+
+        items = ItemModel.query.filter(ItemModel.vname == vname).all()
+        if not items:
+            abort(404, message="Item not found")
+        return items

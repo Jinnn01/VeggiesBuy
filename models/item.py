@@ -20,3 +20,9 @@ class ItemModel(db.Model):
     # updateTime = db.Column(db.TIMESTAMP, nullable=False)
     # TODO:2. description of veggies
     vdescr = db.Column(db.String, nullable=True)
+
+
+# itemsearch = ItemModel.query.filter(ItemModel.vname == "Tomato").all()
+
+# for item in itemsearch:
+#     print(item)

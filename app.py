@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_smorest import Api
+from sqlalchemy import create_engine
 from db import db
 import models
 from resources.item import blp as ItemBlueprint
@@ -41,3 +42,10 @@ def create_app(db_url=None):
     # api.register_blueprint(UploadBlueprint)
 
     return app
+
+
+# db_uri = "sqlite:///data.db"
+# eng = create_engine(db_uri)
+# out = eng.execute('Select * From stores where stores.sname="Coles";')
+# for r in out:
+#     print(r)
