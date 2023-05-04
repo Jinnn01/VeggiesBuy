@@ -55,7 +55,28 @@ export default function Upload() {
     <StatusBar style='auto' />*/}
 
 
-      <Text style={styles.captionTop}>Supermarket location: </Text>
+      <Text style={styles.captionTop}>Vegetable name: </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Vegetable name"
+        onChangeText={text => setText(text)}
+        //defaultValue={text}
+      />
+      <Text style={styles.caption}>Vegetable price: </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Vegetable price"
+        onChangeText={text => setText(text)}
+        //defaultValue={text}
+      />
+      <Text style={styles.caption}>Supermarket name: </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="ALDI, Coles, or Woolworths"
+        onChangeText={text => setText(text)}
+        //defaultValue={text}
+      />
+      <Text style={styles.caption}>Supermarket location: </Text>
       <TextInput
         style={styles.input}
         placeholder="Supermarket location"
@@ -63,13 +84,6 @@ export default function Upload() {
         //defaultValue={text}
       />
 
-      <Text style={styles.caption}>Vegetable name: </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Vegetable name"
-        onChangeText={text => setText(text)}
-        //defaultValue={text}
-      />
       {/*}
       <TextInput
         style={{height: 40, marginTop: 40}}
@@ -105,7 +119,7 @@ const styles = StyleSheet.create({
   },*/
   captionTop: {
     fontSize: 16,
-    marginTop: 140,
+    marginTop: 80,
     marginBottom: 12,
   },
   caption: {
