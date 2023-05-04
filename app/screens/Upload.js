@@ -53,11 +53,18 @@ export default function Upload() {
     <StatusBar style='auto' />*/}
 
 
-      <Text style={{marginTop: 140, fontSize: 18, color: colors.text}}>Supermarket location: </Text>
-      
+      <Text style={{marginTop: 140, marginLeft: 12, fontSize: 18, color: colors.text}}>Supermarket location: </Text>
       <TextInput
-        style={{height: 40, marginTop: 30, fontSize: 18, borderWidth: 1, padding: 10}}
+        style={{height: 60, width: 400, marginTop: 30, marginLeft: 12, fontSize: 18, borderWidth: 1, padding: 10}}
         placeholder="Supermarket location"
+        onChangeText={text => setText(text)}
+        //defaultValue={text}
+      />
+
+      <Text style={{marginTop: 40, marginLeft: 12, fontSize: 18, color: colors.text}}>Vegetable name: </Text>
+      <TextInput
+        style={{height: 60, width: 400, marginTop: 30, marginLeft: 12, fontSize: 18, borderWidth: 1, padding: 10}}
+        placeholder="Vegetable name"
         onChangeText={text => setText(text)}
         //defaultValue={text}
       />
