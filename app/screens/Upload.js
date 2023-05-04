@@ -3,6 +3,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 
+
 export default function Upload() {
   const [hasPermission, setHasPermission] = React.useState(false);
   const [scanData, setScanData] = React.useState();
@@ -30,6 +31,7 @@ export default function Upload() {
 
   return (
     <View style={styles.container}>
+      {/*}
       <BarCodeScanner 
         style={styles.barCodeScanner}
         onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}
@@ -42,7 +44,7 @@ export default function Upload() {
       }
       <Text style={{ fontWeight: '700', fontSize: 24, paddingTop: 18}}>Scan Receipt</Text>
       <Text style={{ fontWeight: '400', fontSize: 14, paddingTop: 8}}>Simply place your supermarket receipt within the frame.</Text>
-      <StatusBar style='auto' />
+    <StatusBar style='auto' />*/}
     </View>
   );
 }
@@ -54,10 +56,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     //justifyContent: "center",
   },
+  /*
   barCodeScanner: {
     width: '90%',
     height: '60%',
     borderRadius: '24',
     marginTop: '18%',
-  },
+  },*/
 });
