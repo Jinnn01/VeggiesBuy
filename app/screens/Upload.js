@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, SafeAreaView, Button, TextInput } from "react-native";
+import { useTheme } from '@react-navigation/native';
 
 
 export default function Upload() {
+  const { colors } = useTheme();
   const [text, setText] = useState('');
   //const [text2, setText] = useState('');
   //const [text3, setText] = useState('');
@@ -51,10 +53,10 @@ export default function Upload() {
     <StatusBar style='auto' />*/}
 
 
-      <Text>Supermarket location: </Text>
+      <Text style={{marginTop: 140, fontSize: 18, color: colors.text}}>Supermarket location: </Text>
       
       <TextInput
-        style={{height: 40, borderColor: 'blue', marginTop: 140, fontSize: 22}}
+        style={{height: 40, marginTop: 30, fontSize: 18, borderWidth: 1, padding: 10}}
         placeholder="Supermarket location"
         onChangeText={text => setText(text)}
         //defaultValue={text}
