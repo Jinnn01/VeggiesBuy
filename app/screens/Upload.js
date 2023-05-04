@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, SafeAreaView, Button, TextInput } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 import { useTheme } from '@react-navigation/native';
 
 
@@ -36,7 +36,9 @@ export default function Upload() {
   };*/
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+
+      <Text style={{ fontWeight: '700', fontSize: 32, paddingBottom: 18, paddingTop: 38, paddingHorizontal: 10, color: colors.text}}>Upload</Text>
       {/*}
       <BarCodeScanner 
         style={styles.barCodeScanner}
@@ -53,17 +55,17 @@ export default function Upload() {
     <StatusBar style='auto' />*/}
 
 
-      <Text style={{marginTop: 140, marginLeft: 12, fontSize: 18, color: colors.text}}>Supermarket location: </Text>
+      <Text style={styles.captionTop}>Supermarket location: </Text>
       <TextInput
-        style={{height: 60, width: 400, marginTop: 30, marginLeft: 12, fontSize: 18, borderWidth: 1, padding: 10}}
+        style={styles.input}
         placeholder="Supermarket location"
         onChangeText={text => setText(text)}
         //defaultValue={text}
       />
 
-      <Text style={{marginTop: 40, marginLeft: 12, fontSize: 18, color: colors.text}}>Vegetable name: </Text>
+      <Text style={styles.caption}>Vegetable name: </Text>
       <TextInput
-        style={{height: 60, width: 400, marginTop: 30, marginLeft: 12, fontSize: 18, borderWidth: 1, padding: 10}}
+        style={styles.input}
         placeholder="Vegetable name"
         onChangeText={text => setText(text)}
         //defaultValue={text}
@@ -82,7 +84,7 @@ export default function Upload() {
         defaultValue={text3}
       />*/}
       
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -101,4 +103,22 @@ const styles = StyleSheet.create({
     borderRadius: '24',
     marginTop: '18%',
   },*/
+  captionTop: {
+    fontSize: 16,
+    marginTop: 140,
+    marginBottom: 12,
+  },
+  caption: {
+    fontSize: 16,
+    marginTop: 16,
+    marginBottom: 12,
+  },
+  input: {
+    borderWidth: 1,
+    alignSelf: "stretch",
+    padding: 8,
+    fontSize: 14,
+    height: 44,
+    borderRadius: 4,
+  }
 });
