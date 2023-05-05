@@ -7,6 +7,8 @@ from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
 # from resources.upload import blp as UploadBlueprint
 from resources.user import blp as UserBlueprint
+from resources.ocr_endpoint import  blp as ocr_endpoint
+
 
 
 def create_app(db_url=None):
@@ -28,7 +30,9 @@ def create_app(db_url=None):
     db.init_app(app)
     api = Api(app)
 
-    @app.before_first_request
+    # @app.before_first_request
+    # rohith
+    @app.before_request
     # with app.app_context():
     def create_tables():
         db.create_all()
@@ -39,5 +43,6 @@ def create_app(db_url=None):
 
     api.register_blueprint(UserBlueprint)
     # api.register_blueprint(UploadBlueprint)
+    api.register_blueprint(ocr_endpoint)
 
     return app
