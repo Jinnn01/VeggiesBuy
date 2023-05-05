@@ -9,5 +9,6 @@
     "amplify/backend/awscloudformation": true
   },
   "java.compile.nullAnalysis.mode": "automatic",
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "git.ignoreLimitWarning": true
 }

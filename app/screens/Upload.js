@@ -38,7 +38,7 @@ export default function Upload() {
   return (
     <View style={styles.container}>
 
-      <Text style={{ fontWeight: '700', fontSize: 32, paddingBottom: 18, paddingTop: 38, paddingHorizontal: 10, color: colors.text}}>Upload</Text>
+      <Text style={{ fontWeight: '700', fontSize: 32, paddingBottom: 18, paddingTop: 100, paddingHorizontal: 10, color: colors.text}}>Upload</Text>
       {/*}
       <BarCodeScanner 
         style={styles.barCodeScanner}
@@ -105,7 +105,7 @@ export default function Upload() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    //backgroundColor: "#fff",
     alignItems: "left",
     padding: 10
     //justifyContent: "center",
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },*/
   captionTop: {
     fontSize: 16,
-    marginTop: 80,
+    marginTop: 40,
     marginBottom: 12,
   },
   caption: {

@@ -1,8 +1,22 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
-import Navigation from 'C:/Users/kotla/Authentication/src/navigation';
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView, Text, StyleSheet, View, Button, useColorScheme} from 'react-native';
+import Navigation from 'src/navigation';
 import { Amplify } from 'aws-amplify';
-import config from 'C:/Users/kotla/Authentication/src/aws-exports';
+import config from 'src/aws-exports';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Home from './app/screens/Home';
+import Map from './app/screens/Map';
+import Upload from './app/screens/Upload';
+import MapView, {Callout, Marker} from 'react-native-maps';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
+
+
 
 Amplify.configure(config);
 
