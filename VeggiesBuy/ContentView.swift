@@ -41,6 +41,12 @@ struct ContentView: View {
                         Image(systemName: "tray.and.arrow.up.fill")
                         Text("Upload")
                     }
+                
+                RewardsView()
+                    .tabItem {
+                        Image(systemName: "trophy.fill")
+                        Text("Rewards")
+                    }
             }.accentColor(.green)
             
         }

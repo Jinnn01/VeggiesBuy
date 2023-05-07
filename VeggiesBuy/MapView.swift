@@ -64,7 +64,7 @@ struct MapView: View {
                     .shadow(radius: 2)
                 }
             }
-        }.ignoresSafeArea(.all)
+        }.ignoresSafeArea(.all, edges: .top)
     }
 }
 
