@@ -1,0 +1,56 @@
+[
+    {
+        "shopName": "ALDI Fairy Meadow",
+        "address": {
+            "streetAddress": "111 Princes Highway",
+            "suburb": "Fairy Meadow",
+            "state": "New South Wales",
+            "postcode": "2519"
+        }
+    },
+    {
+        "shopName": "ALDI Wollongong",
+        "address": {
+            "streetAddress": "111 Princes Highway",
+            "suburb": "Wollongong",
+            "state": "New South Wales",
+            "postcode": "2500"
+        }
+    },
+    {
+        "shopName": "Coles Fairy Meadow",
+        "address": {
+            "streetAddress": "222 Princes Highway",
+            "suburb": "Fairy Meadow",
+            "state": "New South Wales",
+            "postcode": "2519"
+        }
+    },
+    {
+        "shopName": "Coles Wollongong",
+        "address": {
+            "streetAddress": "222 Princes Highway",
+            "suburb": "Wollongong",
+            "state": "New South Wales",
+            "postcode": "2500"
+        }
+    },
+    {
+        "shopName": "Woolworths Fairy Meadow",
+        "address": {
+            "streetAddress": "333 Princes Highway",
+            "suburb": "Fairy Meadow",
+            "state": "New South Wales",
+            "postcode": "2519"
+        }
+    },
+    {
+        "shopName": "Woolworths Wollongong",
+        "address": {
+            "streetAddress": "333 Princes Highway",
+            "city": "Wollongong",
+            "state": "New South Wales",
+            "postcode": "2500"
+        }
+    }
+]
