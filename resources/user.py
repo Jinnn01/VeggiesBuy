@@ -11,7 +11,7 @@ from schemas1 import UserSchema
 blp = Blueprint("user", __name__, description="Operations on users")
 
 
-@blp.route("/user/<string:uid>")
+@blp.route("/user/<int:uid>")
 class Users(MethodView):
     # get a store
     @blp.response(200, UserSchema)

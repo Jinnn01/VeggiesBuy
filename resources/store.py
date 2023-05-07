@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 blp = Blueprint("store", __name__, description="Operation on stores")
 
 
-@blp.route("/store/<string:sid>")
+@blp.route("/store/<int:sid>")
 class Stores(MethodView):
     # get a store
     @blp.response(200, StoreSchema)

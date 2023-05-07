@@ -12,7 +12,7 @@ from schemas1 import ItemSchema, ItemUpdateSchema
 blp = Blueprint("item", __name__, description="Operation on items")
 
 
-@blp.route("/item/<string:item_id>")
+@blp.route("/item/<int:item_id>")
 class item(MethodView):
     @blp.response(200, ItemSchema)
     def get(self, item_id):
@@ -74,14 +74,26 @@ class itemlist(MethodView):
 
 
 # test get item name return value
+@blp.route("/item/<float:price>")
+class itemView(MethodView):
+    @blp.response(200, ItemSchema(many=True))
+    def get(self, price):
+        # Base on the item name to retrieve data, item name is a *unique field*
+        # not found; return 404 error
+        # return ItemModel.query.all()
+        item = ItemModel.query.filter(ItemModel.price == price).all()
+
+        return item
+
+# test get item name return value
+
+
 @blp.route("/item/<string:vname>")
-class item(MethodView):
+class itemView(MethodView):
     @blp.response(200, ItemSchema(many=True))
     def get(self, vname):
         # Base on the item name to retrieve data, item name is a *unique field*
-        # not found return 404 error
+        # not found; return 404 error
 
-        items = ItemModel.query.filter(ItemModel.vname == vname).all()
-        if not items:
-            abort(404, message="Item not found")
-        return items
+        item = ItemModel.query.filter(ItemModel.vname == vname).all()
+        return item

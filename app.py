@@ -10,6 +10,7 @@ from resources.store import blp as StoreBlueprint
 from resources.user import blp as UserBlueprint
 
 
+
 def create_app(db_url=None):
     app = Flask(__name__, instance_path=os.getcwd())
     # app = Flask(__name__)
@@ -24,6 +25,7 @@ def create_app(db_url=None):
     # app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv(
     #    "DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or "sqlite:///data.db"
+    # app.config["SQLALCHEMY_DATABASE_URI"] = db_url or "sqlite:///newdata.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
@@ -42,10 +44,3 @@ def create_app(db_url=None):
     # api.register_blueprint(UploadBlueprint)
 
     return app
-
-
-# db_uri = "sqlite:///data.db"
-# eng = create_engine(db_uri)
-# out = eng.execute('Select * From stores where stores.sname="Coles";')
-# for r in out:
-#     print(r)

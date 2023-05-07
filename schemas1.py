@@ -6,7 +6,7 @@ class PlainItemSchema(Schema):
     vid = fields.Int(dump_only=True)
     # we need data from user by JSON file, those data will be validated
     vname = fields.Str(required=True)
-    vdescr = fields.Str()
+    # vdescr = fields.Str()
     price = fields.Float(required=True)
     sid = fields.Str(required=True)
 
@@ -15,13 +15,17 @@ class PlainStoreSchema(Schema):
     sid = fields.Int(dump_only=True)
     sname = fields.Str(required=True)
     saddress = fields.Str()
+    slatitude = fields.Str()
+    slongitude = fields.Str()
 
 
 class ItemSchema(PlainItemSchema):
     # pass store id when we are receiving data from the client
-    sid = fields.Int(required=True, load_only=True)
+    # sid = fields.Int(required=True, load_only=True)
+    sid = fields.Int(required=True)
     # dump_only = True, only give data to client, not receive data from client
-    store = fields.Nested(PlainStoreSchema(), dump_only=True)
+    # store = fields.Nested(PlainStoreSchema(), dump_only=True)
+    store = fields.List(fields.Nested(PlainStoreSchema()), dump_only=True)
 
 
 class ItemUpdateSchema(Schema):
@@ -36,6 +40,8 @@ class StoreSchema(PlainStoreSchema):
 
 
 # Upload & User schema
+
+
 class UserSchema(Schema):
     # user can not access the item id
     uid = fields.Int(dump_only=True)
@@ -44,16 +50,17 @@ class UserSchema(Schema):
     email = fields.Email(required=True)
 
 
-# class UploadSchema(Schema):
+# class PlainUploadSchema(Schema):
 #     uploadid = fields.Int(dump_only=True)
+#     insertTime = fields.DateTime()
+    # uid = fields.Int(required=True)
     # insertTime = fields.DateTime(dump_only=True)
 
 
 # class UploadSchema(PlainUploadSchema):
-    # uid = fields.Int(required=True, load_only=True)
+#     uid = fields.Int(required=True, load_only=True)
     # vid = fields.Int(required=True, load_only=True)
     # sid = fields.Int(required=True, load_only=True)
 
-
-# class UserSchema(PlainUserSchema):
-#     uploads = fields.List(fields.Nested(PlainUploadSchema()), dump_only=True)
+    # class UserSchema(UserSchema):
+    #     uploads = fields.List(fields.Nested(PlainUploadSchema()), dump_only=True)
