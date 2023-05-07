@@ -19,5 +19,7 @@ class StoreModel(db.Model):
     # if store is deleted, then all the items will be deleted
     items = db.relationship(
         "ItemModel", back_populates="stores", lazy="dynamic", cascade="all,delete")
+    uploads = db. relationship(
+        "UploadModel", back_populates="stores", lazy="dynamic", cascade="all,delete")
     # upload = db.relationship(
     #     "UploadModel", back_populates="stores", lazy="dynamic", cascade="all,delete")
