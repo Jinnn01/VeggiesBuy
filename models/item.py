@@ -11,8 +11,8 @@ class ItemModel(db.Model):
     vname = db.Column(db.String(80), unique=False, nullable=False)
     price = db.Column(db.Float(precision=2), unique=False, nullable=False)
     # store id as a foreignkey
-    sid = db.Column(db.Integer, db.ForeignKey(
-        "stores.sid"), unique=False, nullable=False)
+    sname = db.Column(db.String(80), db.ForeignKey(
+        "stores.sname"), unique=False, nullable=False)
 
     # store variable with storemodel object, whose id will match the foreignkey
     # link item with stores, sid as a foreign key

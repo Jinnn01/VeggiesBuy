@@ -6,7 +6,7 @@ from flask_smorest import Blueprint, abort
 from db import db
 from models import UploadModel
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from schemas1 import UploadSchema
+from schemas1 import PlainUploadSchema
 
 blp = Blueprint("upload", __name__, description="Uploading")
 
@@ -14,7 +14,7 @@ blp = Blueprint("upload", __name__, description="Uploading")
 @blp.route("/upload/<string:uploadid>")
 class Uploads(MethodView):
     # get a store
-    @blp.response(200, UploadSchema)
+    @blp.response(200, PlainUploadSchema)
     def get(self, uploadid):
         upload = UploadModel.query.get_or_404(uploadid)
         return upload
@@ -23,8 +23,8 @@ class Uploads(MethodView):
 @blp.route("/upload")
 class UploadList(MethodView):
     # create a store
-    @blp.arguments(UploadSchema)
-    @blp.response(200, UploadSchema)
+    @blp.arguments(PlainUploadSchema)
+    @blp.response(200, PlainUploadSchema)
     def post(self, upload_data):
         upload = UploadModel(**upload_data)
         # try:

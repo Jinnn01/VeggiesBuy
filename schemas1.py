@@ -8,7 +8,7 @@ class PlainItemSchema(Schema):
     vname = fields.Str(required=True)
     # vdescr = fields.Str()
     price = fields.Float(required=True)
-    sid = fields.Str(required=True)
+    sname = fields.Str(required=True)
 
 
 class PlainStoreSchema(Schema):
@@ -22,7 +22,7 @@ class PlainStoreSchema(Schema):
 class ItemSchema(PlainItemSchema):
     # pass store id when we are receiving data from the client
     # sid = fields.Int(required=True, load_only=True)
-    sid = fields.Int(required=True)
+    sname = fields.Str(required=True)
     # dump_only = True, only give data to client, not receive data from client
     # store = fields.Nested(PlainStoreSchema(), dump_only=True)
     store = fields.List(fields.Nested(PlainStoreSchema()), dump_only=True)
@@ -32,7 +32,7 @@ class ItemUpdateSchema(Schema):
     # only price and name
     price = fields.Float()
     vname = fields.Str()
-    sid = fields.Int()
+    sname = fields.Str()
 
 
 class StoreSchema(PlainStoreSchema):
@@ -50,11 +50,12 @@ class UserSchema(Schema):
     email = fields.Email(required=True)
 
 
-# class PlainUploadSchema(Schema):
-#     uploadid = fields.Int(dump_only=True)
-#     insertTime = fields.DateTime()
-    # uid = fields.Int(required=True)
-    # insertTime = fields.DateTime(dump_only=True)
+class PlainUploadSchema(Schema):
+    uploadid = fields.Int(dump_only=True)
+    vname = fields.Str()
+    vprice = fields.Str()
+    insertTime = fields.DateTime()
+    insertTime = fields.DateTime(dump_only=True)
 
 
 # class UploadSchema(PlainUploadSchema):

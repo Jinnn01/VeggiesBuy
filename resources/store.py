@@ -12,17 +12,17 @@ from sqlalchemy import create_engine
 blp = Blueprint("store", __name__, description="Operation on stores")
 
 
-@blp.route("/store/<int:sid>")
+@blp.route("/store/<string:sname>")
 class Stores(MethodView):
     # get a store
     @blp.response(200, StoreSchema)
-    def get(self, sid):
-        store = StoreModel.query.get_or_404(sid)
+    def get(self, sname):
+        store = StoreModel.query.get_or_404(sname)
         return store
 
     # delete a store
-    def delete(self, sid):
-        store = StoreModel.query.get_or_404(sid)
+    def delete(self, sname):
+        store = StoreModel.query.get_or_404(sname)
         db.session.delete(store)
         db.session.commit()
         return {"message": "Store deleted"}
@@ -52,14 +52,14 @@ class StoreList(MethodView):
 
 
 # test: based on the sname return store list
-@blp.route("/store/<string:sname>")
-class Stores(MethodView):
-    @blp.response(200, StoreSchema(many=True))
-    def get(self, sname):
-        # Base on the item name to retrieve data, item name is a *unique field*
-        # not found return 404 error
-        # stores = StoreModel.query
-        stores = StoreModel.query.filter(StoreModel.sname == sname).all()
-        if not stores:
-            abort(404, message="Store not found")
-        return stores
+# @blp.route("/store/<string:sname>")
+# class Stores(MethodView):
+#     @blp.response(200, StoreSchema(many=True))
+#     def get(self, sname):
+#         # Base on the item name to retrieve data, item name is a *unique field*
+#         # not found return 404 error
+#         # stores = StoreModel.query
+#         stores = StoreModel.query.filter(StoreModel.sname == sname).all()
+#         if not stores:
+#             abort(404, message="Store not found")
+#         return stores
