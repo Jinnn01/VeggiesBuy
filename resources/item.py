@@ -86,8 +86,6 @@ class itemView(MethodView):
         return item
 
 # test get item name return value
-
-
 @blp.route("/item/<string:vname>")
 class itemView(MethodView):
     @blp.response(200, ItemSchema(many=True))
@@ -97,3 +95,5 @@ class itemView(MethodView):
 
         item = ItemModel.query.filter(ItemModel.vname == vname).all()
         return item
+    
+
