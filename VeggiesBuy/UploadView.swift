@@ -14,6 +14,10 @@ struct UploadView: View {
     @State private var supermarketName = ""
     @State private var supermarketLocation = ""
     
+    let marketName = ["ALDI", "Coles", "Woolworths"]
+    
+    @State private var selectedSupermarket = "ALDI"
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -26,6 +30,13 @@ struct UploadView: View {
                     }
                     Section(header: Text("Supermarket details")) {
                         TextField("Supermarket Name", text: $supermarketName)
+                        
+                        Picker("Supermarket Name:", selection: $selectedSupermarket) {
+                            ForEach(marketName, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        
                         TextField("Supermarket Location", text: $supermarketLocation)
                     }
                 }
