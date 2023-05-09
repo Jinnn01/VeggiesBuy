@@ -4,14 +4,16 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from models import ItemModel
 from db import db
+from sqlalchemy import select
+from datetime import datetime
 
 from sqlalchemy.exc import SQLAlchemyError
-from schemas1 import ItemSchema, ItemUpdateSchema
+from schemas import ItemSchema, ItemUpdateSchema
 
 blp = Blueprint("item", __name__, description="Operation on items")
 
 
-@blp.route("/item/<string:item_id>")
+@blp.route("/item/<int:item_id>")
 class item(MethodView):
     @blp.response(200, ItemSchema)
     def get(self, item_id):
@@ -39,6 +41,7 @@ class item(MethodView):
         else:
             # item = ItemModel(**item_data)
             item = ItemModel(vid=item_id, **item_data)
+
             # ; not working, set the
 
         db.session.add(item)
@@ -70,3 +73,38 @@ class itemlist(MethodView):
     # get item list
     def get(self):
         return ItemModel.query.all()
+
+
+@blp.route("/item/<string:vname>")
+class itemView(MethodView):
+    @blp.response(200, ItemSchema(many=True))
+    def get(self, vname):
+        # Base on the item name to retrieve data, item name is a *unique field*
+        # not found; return 404 error
+        item = ItemModel.query.filter(ItemModel.vname == vname).all()
+        if item:
+            return item
+        else:
+            abort(404, message="Veggies not found")
+
+    @blp.arguments(ItemUpdateSchema)
+    @blp.response(200, ItemSchema)
+    # update an item, item_data from input
+    def put(self, item_data, vname):
+        # Find the item based on vname and sname
+        item = ItemModel.query.filter_by(
+            vname=vname, sname=item_data["sname"], unit=item_data["unit"]).first()
+
+        if item:
+            # Check if the input price is different from the price in the database
+            if item_data["price"] != item.price:
+                # Update the item's price and updatetime
+                item.price = item_data["price"]
+                item.updateTime = datetime.now()  # Update with the current timestamp
+                db.session.commit()
+
+                return {"message": "Item price has been updated"}
+            else:
+                return {"message": "Item price is already up to date"}
+        else:
+            abort(404, message="Veggies not found")
