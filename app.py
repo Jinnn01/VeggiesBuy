@@ -6,7 +6,6 @@ from db import db
 import models
 from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
-from resources.upload import blp as UploadBlueprint
 from resources.user import blp as UserBlueprint
 
 
@@ -40,6 +39,5 @@ def create_app(db_url=None):
     api.register_blueprint(StoreBlueprint)
 
     api.register_blueprint(UserBlueprint)
-    api.register_blueprint(UploadBlueprint)
 
     return app

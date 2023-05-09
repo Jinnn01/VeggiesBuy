@@ -9,6 +9,7 @@ class PlainItemSchema(Schema):
     # vdescr = fields.Str()
     price = fields.Float(required=True)
     sname = fields.Str(required=True)
+    unit = fields.Str(required=True)
 
 
 class PlainStoreSchema(Schema):
@@ -33,6 +34,7 @@ class ItemUpdateSchema(Schema):
     price = fields.Float(required=True)
     vname = fields.Str(required=True)
     sname = fields.Str(required=True)
+    unit = fields.Str()
     updateTime = fields.DateTime()
     updateTime = fields.DateTime(dump_only=True)
 
@@ -52,21 +54,11 @@ class UserSchema(Schema):
     email = fields.Email(required=True)
 
 
-class PlainUploadSchema(Schema):
-    uploadid = fields.Int(dump_only=True)
-    uid = fields.Int()
-    vname = fields.Str(required=True)
-    vprice = fields.Str(required=True)
-    sname = fields.Str(required=True)
-    insertTime = fields.DateTime()
-    insertTime = fields.DateTime(dump_only=True)
-
-
-# class UploadSchema(PlainUploadSchema):
-#     sname = fields.Str()
-#     uid = fields.Int(required=True, load_only=True)
-    # vid = fields.Int(required=True, load_only=True)
-    # sid = fields.Int(required=True, load_only=True)
-
-    # class UserSchema(UserSchema):
-    #     uploads = fields.List(fields.Nested(PlainUploadSchema()), dump_only=True)
+# class PlainUploadSchema(Schema):
+#     uploadid = fields.Int(dump_only=True)
+#     uid = fields.Int()
+#     vname = fields.Str(required=True)
+#     vprice = fields.Str(required=True)
+#     sname = fields.Str(required=True)
+#     insertTime = fields.DateTime()
+#     insertTime = fields.DateTime(dump_only=True)
