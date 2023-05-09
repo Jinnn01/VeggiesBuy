@@ -1,4 +1,5 @@
 from db import db
+from datetime import datetime
 
 
 # mapping between row in a table to a python class
@@ -13,6 +14,7 @@ class ItemModel(db.Model):
     # store id as a foreignkey
     sname = db.Column(db.String(80), db.ForeignKey(
         "stores.sname"), unique=False, nullable=False)
+    updateTime = db.Column(db.DateTime, default=datetime.now)
 
     # store variable with storemodel object, whose id will match the foreignkey
     # link item with stores, sid as a foreign key

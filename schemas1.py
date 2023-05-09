@@ -30,9 +30,11 @@ class ItemSchema(PlainItemSchema):
 
 class ItemUpdateSchema(Schema):
     # only price and name
-    price = fields.Float()
-    vname = fields.Str()
-    sname = fields.Str()
+    price = fields.Float(required=True)
+    vname = fields.Str(required=True)
+    sname = fields.Str(required=True)
+    updateTime = fields.DateTime()
+    updateTime = fields.DateTime(dump_only=True)
 
 
 class StoreSchema(PlainStoreSchema):
