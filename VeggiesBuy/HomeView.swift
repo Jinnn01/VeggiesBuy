@@ -77,7 +77,7 @@ struct HomeView: View {
                             
                             Text(vegetable.vname)
                                 .bold()
-                            Text(vegetable.price)
+                            //Text(vegetable.price)
                         }
                         .padding(3)
                     }
