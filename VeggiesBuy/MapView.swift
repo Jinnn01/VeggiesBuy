@@ -62,6 +62,7 @@ struct MapView: View {
                     .fill(.red)
                     .frame(width: 12, height: 12)
                     .shadow(radius: 2)
+                    Text("Coles")
                 }
             }
         }.ignoresSafeArea(.all, edges: .top)
