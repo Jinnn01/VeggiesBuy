@@ -15,7 +15,7 @@ struct Location: Identifiable {
 }
 
 struct MapView: View {
-    @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.42, longitude: 150.89), span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
+    @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
     /*
     let locationsALDI = [
@@ -34,12 +34,12 @@ struct MapView: View {
     ]*/
     
     let locations = [
-        Location(name: "ALDI Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.53, longitude: 150.90)),
-        Location(name: "ALDI Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.40, longitude: 150.90)),
-        Location(name: "Coles Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.43, longitude: 150.90)),
-        Location(name: "Coles Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.40, longitude: 150.90)),
-        Location(name: "Woolworths Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.43, longitude: 150.90)),
-        Location(name: "Woolworths Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.40, longitude: 150.90))
+        Location(name: "ALDI Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.4280, longitude: 150.8991)),
+        Location(name: "ALDI Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.3938, longitude: 150.8932)),
+        Location(name: "Coles Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.4243, longitude: 150.8926)),
+        Location(name: "Coles Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.3947, longitude: 150.8932)),
+        Location(name: "Woolworths Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.42703, longitude: 150.89611)),
+        Location(name: "Woolworths Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.3917, longitude: 150.8937))
     ]
     
     var body: some View {
