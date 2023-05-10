@@ -7,21 +7,23 @@
 
 import SwiftUI
 
-/*
-// iosacademy tutorial
-struct Course: Hashable, Codable {
-    let name: String
-    let image: String
-}*/
 
-/*
+// iosacademy tutorial
+struct Store: Hashable, Codable {
+    let sname: String
+    //let image: String
+}
+
+
 // iosacademy tutorial
 class ViewModel: ObservableObject {
-    @Published var courses: [Course] = []
+    @Published var stores: [Store] = []
     
-    http://localhost:5000/api/items
+    //http://localhost:5000/api/items
     func fetch() {
-        guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
+        //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
+            //return
+        guard let url = URL(string: "http://localhost:5005/store") else {
             return
         }
         
@@ -33,9 +35,9 @@ class ViewModel: ObservableObject {
             
             // convert to JSON
             do {
-                let courses = try JSONDecoder().decode([Course].self, from: data)
+                let stores = try JSONDecoder().decode([Store].self, from: data)
                 DispatchQueue.main.async {
-                    self?.courses = courses
+                    self?.stores = stores
                 }
             }
             catch {
@@ -44,40 +46,41 @@ class ViewModel: ObservableObject {
         }
         task.resume()
     }
-}*/
+}
 
 struct HomeView: View {
-    //@StateObject var viewModel = ViewModel()
+    @StateObject var viewModel = ViewModel()
     @State private var searchText = ""
-    private var products : [Product] = Product.allProducts
-    let allProducts = ["Apple", "Banana", "Cucumber"]
+    //private var products : [Product] = Product.allProducts
+    //let allProducts = ["Apple", "Banana", "Cucumber"]
     
     var body: some View {
         NavigationView {
             VStack {
-                /*
+                
                 List {
-                    ForEach(viewModel.courses, id: \.self) { course in
+                    ForEach(viewModel.stores, id: \.self) { store in
                         HStack {
-                            Image("")
-                                .frame(width: 120, height: 60)
-                                .background(Color.gray)
+                            //Image("")
+                                //.frame(width: 120, height: 60)
+                                //.background(Color.gray)
                             
                             
-                            Text(course.name)
+                            Text(store.sname)
                                 .bold()
                         }
                         .padding(3)
                     }
-                }*/
+                }
                 
-                
+                /*
                 List {
                     // ideally the id should be unique
                     ForEach(products, id: \.shopName) { product in
                         Text("\(product.shopName)")
+                        Text("\(product.address.streetAddress)")
                     }
-                }
+                }*/
                 
                 /*
                 List {
@@ -92,20 +95,21 @@ struct HomeView: View {
             .searchable(text: $searchText, prompt: "Search")
             .navigationBarTitle("Home")
             // from the iosacademy tutorial
-            /*
+            
             .onAppear {
                 viewModel.fetch()
-            }*/
+            }
         }
     }
     
+    /*
     var filteredItems: [String] {
         if searchText.isEmpty {
             return allProducts
         } else {
             return allProducts.filter { $0.localizedCaseInsensitiveContains(searchText)}
         }
-    }
+    }*/
 
 }
 
