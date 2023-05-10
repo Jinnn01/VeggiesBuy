@@ -69,7 +69,7 @@ struct HomeView: View {
                 
                 List {
                     ForEach(viewModel.vegetables, id: \.self) { vegetable in
-                        HStack {
+                        VStack {
                             //Image("")
                                 //.frame(width: 120, height: 60)
                                 //.background(Color.gray)
@@ -77,7 +77,9 @@ struct HomeView: View {
                             
                             Text(vegetable.vname)
                                 .bold()
-                            //Text(vegetable.price)
+                            Text(vegetable.sname)
+                            Text(vegetable.unit)
+                            Text("$\(vegetable.price, specifier: "%.2f")")
                         }
                         .padding(3)
                     }
