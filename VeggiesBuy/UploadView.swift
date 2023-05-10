@@ -11,6 +11,7 @@ struct UploadView: View {
     
     @State private var vegetableName = ""
     @State private var vegetablePrice = ""
+    @State private var vegetableUnit = ""
     @State private var supermarketName = ""
     @State private var supermarketLocation = ""
     
@@ -27,16 +28,16 @@ struct UploadView: View {
                     Section(header: Text("Vegetable details")) {
                         TextField("Vegetable Name", text: $vegetableName)
                         TextField("Vegetable Price", text: $vegetablePrice)
+                        TextField("Vegetable Unit", text: $vegetableUnit)
                     }
                     Section(header: Text("Supermarket details")) {
                         TextField("Supermarket Name", text: $supermarketName)
-                        
+                        /*
                         Picker("Supermarket Name:", selection: $selectedSupermarket) {
                             ForEach(marketName, id: \.self) {
                                 Text($0)
                             }
-                        }
-                        
+                        }*/
                         TextField("Supermarket Location", text: $supermarketLocation)
                     }
                 }

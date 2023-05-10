@@ -9,21 +9,30 @@ import SwiftUI
 
 
 // iosacademy tutorial
+/*
 struct Store: Hashable, Codable {
     let sname: String
+    //let image: String
+}*/
+
+struct Vegetable: Hashable, Codable {
+    let sname: String
+    let vname: String
+    let price: Float
+    let unit: String
     //let image: String
 }
 
 
 // iosacademy tutorial
 class ViewModel: ObservableObject {
-    @Published var stores: [Store] = []
+    @Published var vegetables: [Vegetable] = []
     
     //http://localhost:5000/api/items
     func fetch() {
         //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
             //return
-        guard let url = URL(string: "http://localhost:5005/store") else {
+        guard let url = URL(string: "http://localhost:5005/item") else {
             return
         }
         
@@ -35,9 +44,9 @@ class ViewModel: ObservableObject {
             
             // convert to JSON
             do {
-                let stores = try JSONDecoder().decode([Store].self, from: data)
+                let vegetables = try JSONDecoder().decode([Vegetable].self, from: data)
                 DispatchQueue.main.async {
-                    self?.stores = stores
+                    self?.vegetables = vegetables
                 }
             }
             catch {
@@ -59,15 +68,16 @@ struct HomeView: View {
             VStack {
                 
                 List {
-                    ForEach(viewModel.stores, id: \.self) { store in
+                    ForEach(viewModel.vegetables, id: \.self) { vegetable in
                         HStack {
                             //Image("")
                                 //.frame(width: 120, height: 60)
                                 //.background(Color.gray)
                             
                             
-                            Text(store.sname)
+                            Text(vegetable.vname)
                                 .bold()
+                            Text(vegetable.price)
                         }
                         .padding(3)
                     }
