@@ -14,7 +14,49 @@ struct Location: Identifiable {
     let coordinate: CLLocationCoordinate2D
 }
 
+struct VegetableMap: Hashable, Codable {
+    let sname: String
+    let vname: String
+    let price: Float
+    //let unit: String
+    //let image: String
+}
+
+// iosacademy tutorial
+class ViewMapModel: ObservableObject {
+    @Published var vegetablesMap: [VegetableMap] = []
+    
+    //http://localhost:5000/api/items
+    func fetch() {
+        //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
+            //return
+        guard let url = URL(string: "http://localhost:5005/item") else {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _,
+            error in
+            guard let data = data, error == nil else {
+                return
+            }
+            
+            // convert to JSON
+            do {
+                let vegetablesMap = try JSONDecoder().decode([VegetableMap].self, from: data)
+                DispatchQueue.main.async {
+                    self?.vegetablesMap = vegetablesMap
+                }
+            }
+            catch {
+                print(error)
+            }
+        }
+        task.resume()
+    }
+}
+
 struct MapView: View {
+    @StateObject var viewModelMap = ViewMapModel()
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
     /*
@@ -44,20 +86,14 @@ struct MapView: View {
     
     var body: some View {
         
-        
         ZStack {
             //Color.themeBackground
-                
-            /*
-            Map(coordinateRegion: $mapRegion, annotationItems: locationsWoolies) { location in MapAnnotation(coordinate: location.coordinate) {
-                Circle()
-                    .fill(.green)
-                    .frame(width: 36, height: 36)
-                    .shadow(radius: 2)
-                }
-            }*/
             
             Map(coordinateRegion: $mapRegion, annotationItems: locations) { location in MapAnnotation(coordinate: location.coordinate) {
+                /*
+                ForEach(viewModelMap.locations, id: \.self) { vegetableMap in
+                    Text()
+                }*/
                 Circle()
                     .fill(.red)
                     .frame(width: 12, height: 12)

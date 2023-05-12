@@ -23,16 +23,24 @@ struct Vegetable: Hashable, Codable {
     //let image: String
 }
 
+struct Store: Hashable, Codable {
+    let sname: String
+    let saddress: String
+    //let vname: String
+    //let price: Float
+    //let unit: String
+    //let image: String
+}
 
-// iosacademy tutorial
+// fetch store names
 class ViewModel: ObservableObject {
-    @Published var vegetables: [Vegetable] = []
+    @Published var stores: [Store] = []
     
     //http://localhost:5000/api/items
     func fetch() {
         //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
             //return
-        guard let url = URL(string: "http://localhost:5005/item") else {
+        guard let url = URL(string: "http://localhost:5005/store") else {
             return
         }
         
@@ -44,9 +52,9 @@ class ViewModel: ObservableObject {
             
             // convert to JSON
             do {
-                let vegetables = try JSONDecoder().decode([Vegetable].self, from: data)
+                let stores = try JSONDecoder().decode([Store].self, from: data)
                 DispatchQueue.main.async {
-                    self?.vegetables = vegetables
+                    self?.stores = stores
                 }
             }
             catch {
@@ -59,6 +67,7 @@ class ViewModel: ObservableObject {
 
 struct HomeView: View {
     @StateObject var viewModel = ViewModel()
+    //@StateObject var viewModelStore = ViewModelStore()
     @State private var searchText = ""
     //private var products : [Product] = Product.allProducts
     //let allProducts = ["Apple", "Banana", "Cucumber"]
@@ -66,7 +75,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack {
-                
+                /*
                 List {
                     ForEach(viewModel.vegetables, id: \.self) { vegetable in
                         HStack {
@@ -79,8 +88,31 @@ struct HomeView: View {
                                     .bold()
                                 Text("$\(vegetable.price, specifier: "%.2f") per \(vegetable.unit)")
                             }
+                            
                             Spacer()
                             Text(vegetable.sname)
+                            
+
+                        }
+                        .padding(3)
+                    }
+                }*/
+                
+                List {
+                    ForEach(viewModel.stores, id: \.self) { store in
+                        HStack {
+                            //Image("")
+                                //.frame(width: 120, height: 60)
+                                //.background(Color.gray)
+                            
+                            VStack {
+                                Text(store.sname)
+                                    .bold()
+                                //Text("$\(vegetable.price, specifier: "%.2f") per \(vegetable.unit)")
+                            }
+                            
+                            Spacer()
+                            Text(store.saddress)
                             
 
                         }
