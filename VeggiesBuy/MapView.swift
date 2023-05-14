@@ -17,7 +17,7 @@ struct Location: Identifiable {
 struct VegetableMap: Hashable, Codable {
     //let sname: String
     let vname: String
-    //let price: Float
+    let price: Float
     //let unit: String
     //let image: String
 }
@@ -64,6 +64,7 @@ class ViewMapModel: ObservableObject {
 
 struct MapView: View {
     @StateObject var viewModelMap = ViewMapModel()
+    @State private var selectedAnnotation: Location? = nil
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
     let locations = [
@@ -82,15 +83,20 @@ struct MapView: View {
             
             Map(coordinateRegion: $mapRegion, annotationItems: locations) { location in MapAnnotation(coordinate: location.coordinate) {
                     ForEach(viewModelMap.vegetablesMap, id: \.self) { vegetableMap in
-                        Circle()
-                            .fill(.red)
-                            .frame(width: 14, height: 14)
-                            //.shadow(radius: 2)
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.black, lineWidth: 2)
-                            )
-                        Text(vegetableMap.vname)
+                        ZStack {
+                            Circle()
+                                .fill(Color(red: 1.0, green: 0.5, blue: 0.5))
+                                .frame(width: 44, height: 44)
+                                //.shadow(radius: 2)
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.black, lineWidth: 2)
+                                )
+                            Text("$\(vegetableMap.price, specifier: "%.2f")")
+                                .foregroundColor(.black)
+                                .font(.system(size: 12))
+                        }
+
                     }
                 }
             }
