@@ -8,6 +8,21 @@
 import SwiftUI
 import MapKit
 
+extension UIColor {
+    convenience init(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.currentIndex = hex.index(hex.startIndex, offsetBy: 1) // Skip the # character
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+        
+        let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgbValue & 0x0000FF) / 255.0
+        
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+}
+
 struct Location: Identifiable {
     let id = UUID()
     let name: String
@@ -85,7 +100,7 @@ struct MapView: View {
                     ForEach(viewModelMap.vegetablesMap, id: \.self) { vegetableMap in
                         ZStack {
                             Circle()
-                                .fill(Color(red: 1.0, green: 0.5, blue: 0.5))
+                                .fill(Color(UIColor(hex: "#95EFA8")))
                                 .frame(width: 44, height: 44)
                                 //.shadow(radius: 2)
                                 .overlay(
