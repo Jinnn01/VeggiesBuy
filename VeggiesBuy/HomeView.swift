@@ -26,6 +26,8 @@ struct Vegetable: Hashable, Codable {
 struct Store: Hashable, Codable {
     let sname: String
     let saddress: String
+    let slatitude: String
+    let slongitude: String
     //let vname: String
     //let price: Float
     //let unit: String
@@ -113,7 +115,8 @@ struct HomeView: View {
                             
                             Spacer()
                             Text(store.saddress)
-                            
+                            //Text(store.slatitude)
+                            //Text(store.slongitude)
 
                         }
                         .padding(3)

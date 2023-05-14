@@ -15,18 +15,25 @@ struct Location: Identifiable {
 }
 
 struct VegetableMap: Hashable, Codable {
-    let sname: String
+    //let sname: String
     let vname: String
-    let price: Float
+    //let price: Float
     //let unit: String
     //let image: String
 }
 
+/*
+struct Supermarket: Hashable, Codable {
+    let sname: String
+    let slatitude: String
+    let slongitude: String
+}*/
+
 // iosacademy tutorial
 class ViewMapModel: ObservableObject {
     @Published var vegetablesMap: [VegetableMap] = []
+    //@State private var supermarkets: [Supermarket] = []
     
-    //http://localhost:5000/api/items
     func fetch() {
         //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
             //return
@@ -59,22 +66,6 @@ struct MapView: View {
     @StateObject var viewModelMap = ViewMapModel()
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     
-    /*
-    let locationsALDI = [
-        Location(name: "ALDI Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.53, longitude: 150.90)),
-        Location(name: "ALDI Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.40, longitude: 150.90))
-    ]
-    
-    let locationsColes = [
-        Location(name: "Coles Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.43, longitude: 150.90)),
-        Location(name: "Coles Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.40, longitude: 150.90))
-    ]
-    
-    let locationsWoolies = [
-        Location(name: "Woolworths Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.43, longitude: 150.90)),
-        Location(name: "Woolworths Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.40, longitude: 150.90))
-    ]*/
-    
     let locations = [
         Location(name: "ALDI Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.4280, longitude: 150.8991)),
         Location(name: "ALDI Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.3938, longitude: 150.8932)),
@@ -90,18 +81,24 @@ struct MapView: View {
             //Color.themeBackground
             
             Map(coordinateRegion: $mapRegion, annotationItems: locations) { location in MapAnnotation(coordinate: location.coordinate) {
-                /*
-                ForEach(viewModelMap.locations, id: \.self) { vegetableMap in
-                    Text()
-                }*/
-                Circle()
-                    .fill(.red)
-                    .frame(width: 12, height: 12)
-                    .shadow(radius: 2)
-                    Text("Coles")
+                    ForEach(viewModelMap.vegetablesMap, id: \.self) { vegetableMap in
+                        Circle()
+                            .fill(.red)
+                            .frame(width: 14, height: 14)
+                            //.shadow(radius: 2)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
+                        Text(vegetableMap.vname)
+                    }
                 }
             }
+            .onAppear {
+                viewModelMap.fetch()
+            }
         }.ignoresSafeArea(.all, edges: .top)
+        
     }
 }
 
