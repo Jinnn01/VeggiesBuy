@@ -18,4 +18,11 @@ class Reciept:
         return f'{self.store}, {self.location}, {self.timestamp}, {self.items}'
 
     def __str__(self):
-        return f'Store: {self.store} \nLocation: {self.location} \ntimestamp: {self.timestamp} \nItems: {self.items}'
+        return f'Store: {self.store} \nLocation: {self.location} \ntimestamp: {self.timestamp} \nItems: {self.items}' 
+
+    def clear(self):
+        self.store = None
+        self.location = None
+        self.timestamp = None
+        self.items = []
+        return

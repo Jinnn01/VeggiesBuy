@@ -4,7 +4,6 @@ from flask import request as rq
 from PIL import Image
 
 from models.ocr_implementation import *
-from models.related_data import *
 
 blp = Blueprint("ocr_endpoint", __name__, description="endpoints related to ocr")
 
@@ -29,9 +28,8 @@ def get_ocr_text():
     text = do_ocr(image)
     text_array = text.split("\n")
     text_array = [x for x in text_array if x != '']
-    rec = Reciept()
-    output = text_analyze(text_array, rec)
-    output_json = json.dumps(output, indent=4, default= lambda o:o.__json__())
+    output = text_analyze(text_array)
+    output_json = json.dumps(output.__dict__, indent=4)
     return output_json
 
 # text = get_ocr_text()

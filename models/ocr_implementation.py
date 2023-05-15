@@ -8,6 +8,8 @@ from difflib import SequenceMatcher
 from datetime import datetime
 import time
 
+from models import related_data
+
 # timestamp = int(time.time())
 # dt_object = datetime.fromtimestamp(timestamp)
 # formatted_dt = dt_object.strftime("%Y-%m-%d %H:%M:%S")
@@ -115,8 +117,10 @@ def do_ocr(image):
     return text
 
 
-def text_analyze(text, rec):
+def text_analyze(text):
     print("----analyzing text----")
+    rec = related_data.Reciept()
+    rec.clear()
     # print(text)
     line_count = 0
     for each_line in text:

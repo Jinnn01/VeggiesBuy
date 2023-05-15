@@ -14,12 +14,12 @@ from difflib import SequenceMatcher as SM
 #
 # print(SM(None, " Mangerton Rd, Wollongong".lower(), "2,MANGerTon RD,Wollongong".lower()).ratio())
 
-l_each = "total wedweq"
-# pattern = r'\d{2}/\d{2}/\d{4}\s\d{2}:\d{2}'
-match = re.search(r'^total\s.*', l_each)
-if match:
-    print(match.group())
-
-
-l_each = "TOtal     $"
-print(l_each.split(" ")[0])
+# l_each = "total wedweq"
+# # pattern = r'\d{2}/\d{2}/\d{4}\s\d{2}:\d{2}'
+# match = re.search(r'^total\s.*', l_each)
+# if match:
+#     print(match.group())
+# 
+# 
+# l_each = "TOtal     $"
+# print(l_each.split(" ")[0])
