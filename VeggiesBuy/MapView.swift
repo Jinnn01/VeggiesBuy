@@ -33,7 +33,7 @@ struct VegetableMap: Hashable, Codable {
     //let sname: String
     let vname: String
     let price: Float
-    //let unit: String
+    let unit: String
     //let image: String
 }
 
@@ -101,15 +101,15 @@ struct MapView: View {
                         ZStack {
                             Circle()
                                 .fill(Color(UIColor(hex: "#95EFA8")))
-                                .frame(width: 44, height: 44)
+                                .frame(width: 64, height: 64)
                                 //.shadow(radius: 2)
                                 .overlay(
                                     Circle()
                                         .stroke(Color.black, lineWidth: 2)
                                 )
-                            Text("$\(vegetableMap.price, specifier: "%.2f")")
+                            Text("$\(vegetableMap.price, specifier: "%.2f") \n per \(vegetableMap.unit)")
                                 .foregroundColor(.black)
-                                .font(.system(size: 12))
+                                .font(.system(size: 14))
                         }
 
                     }
