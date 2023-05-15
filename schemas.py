@@ -9,7 +9,7 @@ class PlainItemSchema(Schema):
     # vdescr = fields.Str()
     price = fields.Float(required=True)
     sname = fields.Str(required=True)
-    unit = fields.Str(required=True)
+    unit = fields.Str()
 
 
 class PlainStoreSchema(Schema):
