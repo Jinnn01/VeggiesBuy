@@ -11,7 +11,7 @@ class ItemModel(db.Model):
     # can not insert null value as a name, unique = True => items have different name, if there is no unique, means, multiplate item name can be the same
     vname = db.Column(db.String(80), unique=False, nullable=False)
     price = db.Column(db.Float(precision=2), unique=False, nullable=False)
-    unit = db.Column(db.String(80),unique=False, nullable=False)
+    unit = db.Column(db.String(80),unique=False)
     # store id as a foreignkey
     sname = db.Column(db.String(80), db.ForeignKey(
         "stores.sname"), unique=False, nullable=False)
