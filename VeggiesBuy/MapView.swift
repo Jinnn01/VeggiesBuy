@@ -111,8 +111,18 @@ struct MapView: View {
             }
             .edgesIgnoringSafeArea(.top)
             .alert(isPresented: $isShowingAlert) {
-                guard let selectedAnnotation = selectedAnnotation else { return Alert(title: Text("Error"), message: Text("An error occurred."), dismissButton: .default(Text("OK"))) }
-                return Alert(title: Text(selectedAnnotation.sname), message: Text(selectedAnnotation.saddress), dismissButton: .default(Text("OK")))
+                guard let selectedAnnotation = selectedAnnotation else {
+                    return Alert(title: Text("Error"), message: Text("An error occurred."), dismissButton: .default(Text("OK")))
+                }
+                
+                return Alert(
+                    title: Text(selectedAnnotation.sname),
+                    message: Text(selectedAnnotation.saddress),
+                    primaryButton: .default(Text("Back to Map")),
+                    secondaryButton: .default(Text("Go Home"), action: {
+                        // Perform action to go to Home view
+                    })
+                )
             }
             //.navigationBarTitle("Stores")
             .onAppear {
