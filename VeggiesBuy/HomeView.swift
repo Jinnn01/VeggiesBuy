@@ -69,10 +69,7 @@ class ViewModel: ObservableObject {
 
 struct HomeView: View {
     @StateObject var viewModel = ViewModel()
-    //@StateObject var viewModelStore = ViewModelStore()
     @State private var searchText = ""
-    //private var products : [Product] = Product.allProducts
-    //let allProducts = ["Apple", "Banana", "Cucumber"]
     
     var body: some View {
         NavigationView {
@@ -81,67 +78,14 @@ struct HomeView: View {
                 List {
                     ForEach(viewModel.vegetables, id: \.self) { vegetable in
                         HStack {
-                            //Image("")
-                                //.frame(width: 120, height: 60)
-                                //.background(Color.gray)
-                            
-                            HStack {
-                                Text(vegetable.vname)
-                                    .bold()
-                                Spacer()
-                                Text("$\(vegetable.price, specifier: "%.2f")")
-                            }
-                            
+                            Text(vegetable.vname)
+                                .bold()
                             Spacer()
-                            //Text(vegetable.sname)
-                            
-
+                            Text("$\(vegetable.price, specifier: "%.2f")")
                         }
                         .padding(3)
                     }
                 }
-                /*
-                List {
-                    ForEach(viewModel.stores, id: \.self) { store in
-                        HStack {
-                            //Image("")
-                                //.frame(width: 120, height: 60)
-                                //.background(Color.gray)
-                            
-                            VStack {
-                                Text(store.sname)
-                                    .bold()
-                                //Text("$\(vegetable.price, specifier: "%.2f") per \(vegetable.unit)")
-                            }
-                            
-                            Spacer()
-                            Text(store.saddress)
-                            //Text(store.slatitude)
-                            //Text(store.slongitude)
-
-                        }
-                        .padding(3)
-                    }
-                }*/
-                
-                /*
-                List {
-                    // ideally the id should be unique
-                    ForEach(products, id: \.shopName) { product in
-                        Text("\(product.shopName)")
-                        Text("\(product.address.streetAddress)")
-                    }
-                }*/
-                
-                /*
-                List {
-                    // ideally the id should be unique
-                    ForEach(filteredItems, id: \.self) { product in
-                        Text(product)
-                    }
-                }*/
-                
-                //LazyVGrid
             }
             .searchable(text: $searchText, prompt: "Search")
             .navigationBarTitle("Home")
