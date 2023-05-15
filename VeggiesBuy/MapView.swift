@@ -40,10 +40,12 @@ struct VegetableMap: Hashable, Codable {
 }*/
 
 
-struct Supermarket: Hashable, Codable {
+struct Supermarket: Hashable, Codable, Identifiable {
+    let id = UUID()
     let sname: String
     let slatitude: String
     let slongitude: String
+    let saddress: String
 }
 
 // iosacademy tutorial
@@ -81,59 +83,38 @@ class ViewMapModel: ObservableObject {
 
 struct MapView: View {
     @StateObject var viewModelMap = ViewMapModel()
-    @State private var selectedAnnotation: Location? = nil
+    @State private var selectedAnnotation: Supermarket? = nil
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-    
-    let locations = [
-        Location(name: "ALDI Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.4280, longitude: 150.8991)),
-        Location(name: "ALDI Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.3938, longitude: 150.8932)),
-        Location(name: "Coles Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.4243, longitude: 150.8926)),
-        Location(name: "Coles Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.3947, longitude: 150.8932)),
-        Location(name: "Woolworths Wollongong", coordinate: CLLocationCoordinate2D(latitude: -34.42703, longitude: 150.89611)),
-        Location(name: "Woolworths Fairy Meadow", coordinate: CLLocationCoordinate2D(latitude: -34.3917, longitude: 150.8937))
-    ]
+    @State private var isShowingAlert = false
     
     var body: some View {
         NavigationView {
-            VStack {
-                List {
-                    ForEach(viewModelMap.supermarkets, id: \.self) { supermarket in
-                        HStack {
-                            Text(supermarket.sname)
-                                .bold()
-                            //Text("$\(vegetable.price, specifier: "%.2f") per \(vegetable.unit)")
-                            Spacer()
-                            Text(supermarket.slatitude)
-                            Text(supermarket.slongitude)
+            ZStack {
+                Map(coordinateRegion: $mapRegion, annotationItems: viewModelMap.supermarkets) { supermarket in
+                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: Double(supermarket.slatitude) ?? 0.0, longitude: Double(supermarket.slongitude) ?? 0.0)) {
+                        VStack {
+                            Image(systemName: "mappin")
+                                .resizable()
+                                .frame(width: 10, height: 32)
+                                .foregroundColor(.red)
+                            
+                            //Text(supermarket.sname)
+                                //.foregroundColor(.primary)
+                                //.bold()
                         }
-                        
-                        .padding(3)
+                        .onTapGesture {
+                            selectedAnnotation = supermarket
+                            isShowingAlert = true
+                        }
                     }
                 }
-                
-                /*
-                 List {
-                 // ideally the id should be unique
-                 ForEach(products, id: \.shopName) { product in
-                 Text("\(product.shopName)")
-                 Text("\(product.address.streetAddress)")
-                 }
-                 }*/
-                
-                /*
-                 List {
-                 // ideally the id should be unique
-                 ForEach(filteredItems, id: \.self) { product in
-                 Text(product)
-                 }
-                 }*/
-                
-                //LazyVGrid
             }
-            //.searchable(text: $searchText, prompt: "Search")
-            .navigationBarTitle("Stores")
-            // from the iosacademy tutorial
-            
+            .edgesIgnoringSafeArea(.top)
+            .alert(isPresented: $isShowingAlert) {
+                guard let selectedAnnotation = selectedAnnotation else { return Alert(title: Text("Error"), message: Text("An error occurred."), dismissButton: .default(Text("OK"))) }
+                return Alert(title: Text(selectedAnnotation.sname), message: Text(selectedAnnotation.saddress), dismissButton: .default(Text("OK")))
+            }
+            //.navigationBarTitle("Stores")
             .onAppear {
                 viewModelMap.fetch()
             }
