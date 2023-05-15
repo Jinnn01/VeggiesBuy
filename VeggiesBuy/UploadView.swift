@@ -14,6 +14,7 @@ struct UploadView: View {
     @State private var vegetableUnit = ""
     @State private var supermarketName = ""
     @State private var supermarketLocation = ""
+    @State private var showAlert = false // New state variable
     
     let marketName = ["ALDI", "Coles", "Woolworths"]
     
@@ -52,10 +53,18 @@ struct UploadView: View {
                 }
             }
         }
+        .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Item Saved"),
+                        message: Text("Vegetable saved successfully!"),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
     }
     
     func saveVegItem() {
-        print("Vegetable item saved")
+        showAlert = true
+                print("Vegetable item saved")
     }
 }
 

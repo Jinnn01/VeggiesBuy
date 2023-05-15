@@ -19,7 +19,7 @@ struct Vegetable: Hashable, Codable {
     let sname: String
     let vname: String
     let price: Float
-    let unit: String
+    //let unit: String
     //let image: String
 }
 /*
@@ -42,7 +42,7 @@ class ViewModel: ObservableObject {
     func fetch() {
         //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
             //return
-        guard let url = URL(string: "http://localhost:5005/item") else {
+        guard let url = URL(string: "http://localhost:5006/item") else {
             return
         }
         
@@ -89,7 +89,7 @@ struct HomeView: View {
                                 Text(vegetable.vname)
                                     .bold()
                                 Spacer()
-                                Text("$\(vegetable.price, specifier: "%.2f") per \(vegetable.unit)")
+                                Text("$\(vegetable.price, specifier: "%.2f")")
                             }
                             
                             Spacer()

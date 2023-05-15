@@ -28,31 +28,33 @@ struct Location: Identifiable {
     let name: String
     let coordinate: CLLocationCoordinate2D
 }
-
+/*
 struct VegetableMap: Hashable, Codable {
-    //let sname: String
+    let sname: String
     let vname: String
     let price: Float
     let unit: String
+    let slatitude: String
+    let slongitude: String
     //let image: String
-}
+}*/
 
-/*
+
 struct Supermarket: Hashable, Codable {
     let sname: String
     let slatitude: String
     let slongitude: String
-}*/
+}
 
 // iosacademy tutorial
 class ViewMapModel: ObservableObject {
-    @Published var vegetablesMap: [VegetableMap] = []
+    @Published var supermarkets: [Supermarket] = []
     //@State private var supermarkets: [Supermarket] = []
     
     func fetch() {
         //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
             //return
-        guard let url = URL(string: "http://localhost:5005/item") else {
+        guard let url = URL(string: "http://localhost:5006/store") else {
             return
         }
         
@@ -64,9 +66,9 @@ class ViewMapModel: ObservableObject {
             
             // convert to JSON
             do {
-                let vegetablesMap = try JSONDecoder().decode([VegetableMap].self, from: data)
+                let supermarkets = try JSONDecoder().decode([Supermarket].self, from: data)
                 DispatchQueue.main.async {
-                    self?.vegetablesMap = vegetablesMap
+                    self?.supermarkets = supermarkets
                 }
             }
             catch {
@@ -92,39 +94,55 @@ struct MapView: View {
     ]
     
     var body: some View {
-        
-        ZStack {
-            //Color.themeBackground
-            
-            Map(coordinateRegion: $mapRegion, annotationItems: locations) { location in MapAnnotation(coordinate: location.coordinate) {
-                    ForEach(viewModelMap.vegetablesMap, id: \.self) { vegetableMap in
-                        ZStack {
-                            Circle()
-                                .fill(Color(UIColor(hex: "#95EFA8")))
-                                .frame(width: 64, height: 64)
-                                //.shadow(radius: 2)
-                                .overlay(
-                                    Circle()
-                                        .stroke(Color.black, lineWidth: 2)
-                                )
-                            Text("$\(vegetableMap.price, specifier: "%.2f") \n per \(vegetableMap.unit)")
-                                .foregroundColor(.black)
-                                .font(.system(size: 14))
+        NavigationView {
+            VStack {
+                List {
+                    ForEach(viewModelMap.supermarkets, id: \.self) { supermarket in
+                        HStack {
+                            Text(supermarket.sname)
+                                .bold()
+                            //Text("$\(vegetable.price, specifier: "%.2f") per \(vegetable.unit)")
+                            Spacer()
+                            Text(supermarket.slatitude)
+                            Text(supermarket.slongitude)
                         }
-
+                        
+                        .padding(3)
                     }
                 }
+                
+                /*
+                 List {
+                 // ideally the id should be unique
+                 ForEach(products, id: \.shopName) { product in
+                 Text("\(product.shopName)")
+                 Text("\(product.address.streetAddress)")
+                 }
+                 }*/
+                
+                /*
+                 List {
+                 // ideally the id should be unique
+                 ForEach(filteredItems, id: \.self) { product in
+                 Text(product)
+                 }
+                 }*/
+                
+                //LazyVGrid
             }
+            //.searchable(text: $searchText, prompt: "Search")
+            .navigationBarTitle("Stores")
+            // from the iosacademy tutorial
+            
             .onAppear {
                 viewModelMap.fetch()
             }
-        }.ignoresSafeArea(.all, edges: .top)
-        
+        }
     }
-}
-
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView()
+    
+    struct MapView_Previews: PreviewProvider {
+        static var previews: some View {
+            MapView()
+        }
     }
 }
