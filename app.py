@@ -8,6 +8,7 @@ from resources.store import blp as StoreBlueprint
 # from resources.upload import blp as UploadBlueprint
 from resources.user import blp as UserBlueprint
 from resources.ocr_endpoint import  blp as ocr_endpoint
+# from models import scrape_scheduler
 
 
 
@@ -30,13 +31,15 @@ def create_app(db_url=None):
     db.init_app(app)
     api = Api(app)
 
+    # @app.before_request
     # @app.before_first_request
-    # rohith
-    @app.before_request
-    # with app.app_context():
-    def create_tables():
+    with app.app_context():
+        # def create_tables():
         db.create_all()
         # tables in models folder
+
+        # # starting webscraping scheduler
+        # scrape_scheduler.scrape_thread()
 
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
