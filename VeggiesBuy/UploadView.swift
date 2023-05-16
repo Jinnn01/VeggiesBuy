@@ -107,12 +107,12 @@ struct UploadView: View {
     @State private var vegetableUnit = ""
     @State private var supermarketName = ""
     @State private var supermarketLocation = ""
-    @State private var showAlert = false // New state variable
+    @State private var isShowingAlert = false
     
-    // document scanning
+    // Document scanning
     @State private var scannedImage: UIImage?
     @State private var isShowingScanner = false
-        
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -122,16 +122,18 @@ struct UploadView: View {
                         .aspectRatio(contentMode: .fit)
                 } else {
                     Form {
-                        Section(header: Text("Vegetable details")) {
+                        Section(header: Text("Vegetable Details")) {
                             TextField("Vegetable Name", text: $vegetableName)
                             TextField("Vegetable Price", text: $vegetablePrice)
                             TextField("Vegetable Unit", text: $vegetableUnit)
                         }
-                        Section(header: Text("Supermarket details")) {
+                        
+                        Section(header: Text("Supermarket Details")) {
                             TextField("Supermarket Name", text: $supermarketName)
                             TextField("Supermarket Location", text: $supermarketLocation)
                         }
                     }
+                    
                     VStack {
                         Spacer()
                         Button(action: {
@@ -147,7 +149,7 @@ struct UploadView: View {
                         }
                         .padding(16)
                     }
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 30)
                     .sheet(isPresented: $isShowingScanner, onDismiss: {
                         // Handle dismiss action if needed
                     }) {
@@ -156,9 +158,21 @@ struct UploadView: View {
                 }
             }
             .navigationBarTitle("Upload")
+            .navigationBarItems(trailing:
+                Button("Save", action: saveVegItem)
+            )
+        }
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text("Success"), message: Text("Vegetable successfully saved!"), dismissButton: .default(Text("OK")))
         }
     }
+    
+    func saveVegItem() {
+        isShowingAlert = true
+        print("Vegetable item saved")
+    }
 }
+
 
 struct UploadView_Previews: PreviewProvider {
     static var previews: some View {
