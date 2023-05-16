@@ -27,26 +27,56 @@ class ItemSchema(PlainItemSchema):
     sname = fields.Str(required=True)
     slatitude = fields.Str(dump_only=True)
     slongitude = fields.Str(dump_only=True)
-
+    
     @post_dump(pass_many=True)
     def add_store_coordinates(self, data, many, **kwargs):
-        store_names = [item["sname"] for item in data]
+        if many:
+            store_names = [item.get("sname") for item in data]
+        else:
+            store_names = [data.get("sname")]
+
+        store_names = [name for name in store_names if name is not None]  # Filter out None values
+
         stores = StoreModel.query.filter(StoreModel.sname.in_(store_names)).all()
         store_coordinates = {store.sname: {"slatitude": store.slatitude, "slongitude": store.slongitude} for store in stores}
-        
+
         if many:
             for item in data:
-                store_name = item["sname"]
+                store_name = item.get("sname")
                 coordinates = store_coordinates.get(store_name)
                 if coordinates:
                     item.update(coordinates)
         else:
-            store_name = data["sname"]
+            store_name = data.get("sname")
             coordinates = store_coordinates.get(store_name)
             if coordinates:
                 data.update(coordinates)
 
         return data
+
+    # @post_dump(pass_many=True)
+    # def add_store_coordinates(self, data, many, **kwargs):
+    #     if many:
+    #         store_names = [item["sname"] for item in data]
+    #     else:
+    #         store_names = [data["sname"]]
+
+    #     stores = StoreModel.query.filter(StoreModel.sname.in_(store_names)).all()
+    #     store_coordinates = {store.sname: {"slatitude": store.slatitude, "slongitude": store.slongitude} for store in stores}
+
+    #     if many:
+    #         for item in data:
+    #             store_name = item["sname"]
+    #             coordinates = store_coordinates.get(store_name)
+    #             if coordinates:
+    #                 item.update(coordinates)
+    #     else:
+    #         store_name = data["sname"]
+    #         coordinates = store_coordinates.get(store_name)
+    #         if coordinates:
+    #             data.update(coordinates)
+
+    #     return data
 
 
 class ItemUpdateSchema(Schema):
