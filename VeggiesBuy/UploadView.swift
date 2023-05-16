@@ -6,21 +6,11 @@
 //
 
 import SwiftUI
+import VisionKit
 
 // add vegetable item
 class AddItemModel: ObservableObject {
     @Published var vegetables: [Vegetable] = []
-    @Published var searchQuery: String = ""
-    
-    var filteredVegetables: [Vegetable] {
-        if searchQuery.isEmpty {
-            return vegetables
-        } else {
-            return vegetables.filter { vegetable in
-                vegetable.vname.localizedCaseInsensitiveContains(searchQuery)
-            }
-        }
-    }
     
     //http://localhost:5000/api/items
     func fetch() {
@@ -52,6 +42,64 @@ class AddItemModel: ObservableObject {
     }
 }
 
+struct DocumentScannerView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = VNDocumentCameraViewController
+    
+    @Binding var scannedImage: UIImage?
+    @Environment(\.presentationMode) var presentationMode
+    
+    func makeUIViewController(context: Context) -> VNDocumentCameraViewController {
+        let documentScannerViewController = VNDocumentCameraViewController()
+        documentScannerViewController.delegate = context.coordinator
+        return documentScannerViewController
+    }
+    
+    func updateUIViewController(_ uiViewController: VNDocumentCameraViewController, context: Context) {}
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
+        let parent: DocumentScannerView
+        
+        init(_ parent: DocumentScannerView) {
+            self.parent = parent
+        }
+        
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            guard scan.pageCount >= 1 else {
+                controller.dismiss(animated: true) {
+                    self.parent.presentationMode.wrappedValue.dismiss()
+                }
+                return
+            }
+            
+            let image = scan.imageOfPage(at: 0)
+            parent.scannedImage = image
+            
+            controller.dismiss(animated: true) {
+                self.parent.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        
+        func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
+            controller.dismiss(animated: true) {
+                self.parent.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
+            print("Document scanning failed with error: \(error)")
+            
+            controller.dismiss(animated: true) {
+                self.parent.presentationMode.wrappedValue.dismiss()
+            }
+        }
+    }
+}
+
+
 struct UploadView: View {
     
     @State private var vegetableName = ""
@@ -61,55 +109,54 @@ struct UploadView: View {
     @State private var supermarketLocation = ""
     @State private var showAlert = false // New state variable
     
-    //let marketName = ["ALDI", "Coles", "Woolworths"]
-    
-    @State private var selectedSupermarket = "ALDI"
-    
+    // document scanning
+    @State private var scannedImage: UIImage?
+    @State private var isShowingScanner = false
+        
     var body: some View {
         NavigationView {
             ZStack {
-                Color.themeBackground
-                    .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                Form {
-                    Section(header: Text("Vegetable details")) {
-                        TextField("Vegetable Name", text: $vegetableName)
-                        TextField("Vegetable Price", text: $vegetablePrice)
-                        TextField("Vegetable Unit", text: $vegetableUnit)
+                if let image = scannedImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } else {
+                    Form {
+                        Section(header: Text("Vegetable details")) {
+                            TextField("Vegetable Name", text: $vegetableName)
+                            TextField("Vegetable Price", text: $vegetablePrice)
+                            TextField("Vegetable Unit", text: $vegetableUnit)
+                        }
+                        Section(header: Text("Supermarket details")) {
+                            TextField("Supermarket Name", text: $supermarketName)
+                            TextField("Supermarket Location", text: $supermarketLocation)
+                        }
                     }
-                    Section(header: Text("Supermarket details")) {
-                        TextField("Supermarket Name", text: $supermarketName)
-                        /*
-                        Picker("Supermarket Name:", selection: $selectedSupermarket) {
-                            ForEach(marketName, id: \.self) {
-                                Text($0)
-                            }
-                        }*/
-                        TextField("Supermarket Location", text: $supermarketLocation)
+                    VStack {
+                        Spacer()
+                        Button(action: {
+                            isShowingScanner = true
+                        }) {
+                            Text("Scan Receipt")
+                                .font(.headline)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color(UIColor(hex: "#DA7843")))
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                        .padding(16)
                     }
-                }
-                .navigationBarTitle("Upload")
-                .onTapGesture {
-                    hideKeyboard()
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Button("Save", action: saveVegItem)
+                    .padding(.bottom, 20)
+                    .sheet(isPresented: $isShowingScanner, onDismiss: {
+                        // Handle dismiss action if needed
+                    }) {
+                        DocumentScannerView(scannedImage: $scannedImage)
                     }
                 }
             }
+            .navigationBarTitle("Upload")
         }
-        .alert(isPresented: $showAlert) {
-                    Alert(
-                        title: Text("Item Saved"),
-                        message: Text("Vegetable saved successfully!"),
-                        dismissButton: .default(Text("OK"))
-                    )
-                }
-    }
-    
-    func saveVegItem() {
-        showAlert = true
-                print("Vegetable item saved")
     }
 }
 
