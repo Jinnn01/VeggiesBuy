@@ -88,7 +88,7 @@ struct MapView: View {
             return viewModelMap.vegetablesMap
         } else {
             return viewModelMap.vegetablesMap.filter { vegetableMap in
-                vegetableMap.sname.localizedCaseInsensitiveContains(searchQuery)
+                vegetableMap.vname.localizedCaseInsensitiveContains(searchQuery)
             }
         }
     }
@@ -103,24 +103,22 @@ struct MapView: View {
                 Map(coordinateRegion: $mapRegion, annotationItems: filteredVegetablesMap) { vegetableMap in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: Double(vegetableMap.slatitude) ?? 0.0, longitude: Double(vegetableMap.slongitude) ?? 0.0)) {
                         VStack {
-                            Image(systemName: "mappin")
-                                .resizable()
-                                .frame(width: 10, height: 32)
-                                .foregroundColor(.red)
                             ZStack {
-                                
                                 Rectangle()
-                                    .foregroundColor(.blue)
-                                Text(vegetableMap.vname)
-                                    //.foregroundColor(.primary)
-                                    .bold()
+                                    .foregroundColor(Color(UIColor(hex: "#DA7843")))
+                                    .frame(width: 60, height: 24)
+                                    .cornerRadius(8)
+                                    /*
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.black, lineWidth: 1)
+                                    )*/
+                                Text("$\(String(format: "%.2f", vegetableMap.price))")
                                     .foregroundColor(.white)
-                                    .font(.system(size: 14))
-                                    //.lineLimit(1)
-                                    //.truncationMode(.tail)
+                                    .font(.system(size: 14, weight: .bold))
                             }
-                            
                         }
+
                         .onTapGesture {
                             selectedAnnotation = vegetableMap
                             isShowingAlert = true
@@ -136,8 +134,6 @@ struct MapView: View {
                         .padding(.horizontal)
                         .offset(y: 60)
                         .shadow(radius: 4)
-                        //.accentColor(.white)
-                        //.background(Color(UIColor.systemBackground))
                     Spacer()
                 }
                 
