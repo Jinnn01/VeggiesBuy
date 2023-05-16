@@ -150,7 +150,7 @@ struct MapView: View {
                     message:
                         Text(selectedAnnotation.sname +
                              "\nPrice: " + String(format: "$%.2f", selectedAnnotation.price)),
-                    primaryButton: .default(Text("Report Mismatch").foregroundColor(.red)),
+                    primaryButton: .destructive(Text("Report Mismatch")),
                     secondaryButton: .default(Text("Back to Map"), action: {
                         // Perform action to go to Home view
                     })
