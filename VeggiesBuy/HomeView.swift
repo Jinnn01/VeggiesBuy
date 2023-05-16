@@ -99,7 +99,8 @@ struct HomeView: View {
                             }
                             Text(vegetable.sname)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(3)
+                            //.padding(3)
+                                .padding(.vertical, 1)
                         }
                         
                     }
