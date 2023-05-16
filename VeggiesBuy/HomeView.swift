@@ -7,32 +7,12 @@
 
 import SwiftUI
 
-
-// iosacademy tutorial
-/*
-struct Store: Hashable, Codable {
-    let sname: String
-    //let image: String
-}*/
-
 struct Vegetable: Hashable, Codable {
     let sname: String
     let vname: String
     let price: Float
     let unit: String?
-    //let image: String
 }
-/*
-struct Store: Hashable, Codable {
-    let sname: String
-    let saddress: String
-    let slatitude: String
-    let slongitude: String
-    //let vname: String
-    //let price: Float
-    //let unit: String
-    //let image: String
-}*/
 
 // fetch store names
 class ViewModel: ObservableObject {
@@ -49,10 +29,7 @@ class ViewModel: ObservableObject {
         }
     }
     
-    //http://localhost:5000/api/items
     func fetch() {
-        //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
-            //return
         guard let url = URL(string: "http://localhost:5006/item") else {
             return
         }
@@ -81,7 +58,6 @@ class ViewModel: ObservableObject {
 
 struct HomeView: View {
     @StateObject var viewModel = ViewModel()
-    //@State private var searchQuery = ""
     
     var body: some View {
         NavigationView {
@@ -103,7 +79,6 @@ struct HomeView: View {
                             }
                             Text(vegetable.sname)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            //.padding(3)
                                 .padding(.vertical, 1)
                         }
                         
@@ -117,16 +92,6 @@ struct HomeView: View {
             }
         }
     }
-    
-    /*
-    var filteredItems: [String] {
-        if searchText.isEmpty {
-            return allProducts
-        } else {
-            return allProducts.filter { $0.localizedCaseInsensitiveContains(searchText)}
-        }
-    }*/
-
 }
 
 struct HomeView_Previews: PreviewProvider {

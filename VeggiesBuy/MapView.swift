@@ -167,7 +167,6 @@ struct MapView: View {
                 }
                 
             }
-            //.searchable(text: $searchQuery, prompt: "Search")
             .edgesIgnoringSafeArea(.top)
             .alert(isPresented: $isShowingAlert) {
                 guard let selectedAnnotation = selectedAnnotation else {
