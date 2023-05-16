@@ -50,7 +50,6 @@ struct Supermarket: Hashable, Codable, Identifiable {
     let saddress: String
 }
 
-// iosacademy tutorial
 class ViewMapModel: ObservableObject {
     @Published var supermarkets: [Supermarket] = []
     //@State private var supermarkets: [Supermarket] = []
@@ -121,7 +120,7 @@ struct MapView: View {
                                     .foregroundColor(.white)
                                     .font(.system(size: 14))
                                     .lineLimit(1)
-                                    .truncationMode(.head)
+                                    .truncationMode(.tail)
                             }
                             
                         }

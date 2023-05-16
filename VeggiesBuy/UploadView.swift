@@ -7,6 +7,51 @@
 
 import SwiftUI
 
+// add vegetable item
+class AddItemModel: ObservableObject {
+    @Published var vegetables: [Vegetable] = []
+    @Published var searchQuery: String = ""
+    
+    var filteredVegetables: [Vegetable] {
+        if searchQuery.isEmpty {
+            return vegetables
+        } else {
+            return vegetables.filter { vegetable in
+                vegetable.vname.localizedCaseInsensitiveContains(searchQuery)
+            }
+        }
+    }
+    
+    //http://localhost:5000/api/items
+    func fetch() {
+        //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
+            //return
+        guard let url = URL(string: "http://localhost:5006/item") else {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _,
+            error in
+            guard let data = data, error == nil else {
+                return
+            }
+            
+            // convert to JSON
+            do {
+                let vegetables = try JSONDecoder().decode([Vegetable].self, from: data)
+                
+                DispatchQueue.main.async {
+                    self?.vegetables = vegetables
+                }
+            }
+            catch {
+                print(error)
+            }
+        }
+        task.resume()
+    }
+}
+
 struct UploadView: View {
     
     @State private var vegetableName = ""
@@ -16,7 +61,7 @@ struct UploadView: View {
     @State private var supermarketLocation = ""
     @State private var showAlert = false // New state variable
     
-    let marketName = ["ALDI", "Coles", "Woolworths"]
+    //let marketName = ["ALDI", "Coles", "Woolworths"]
     
     @State private var selectedSupermarket = "ALDI"
     
