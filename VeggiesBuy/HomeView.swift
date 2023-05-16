@@ -19,7 +19,7 @@ struct Vegetable: Hashable, Codable {
     let sname: String
     let vname: String
     let price: Float
-    //let unit: String
+    let unit: String?
     //let image: String
 }
 /*
@@ -95,7 +95,11 @@ struct HomeView: View {
                                     .bold()
                                     .font(.system(size: 18))
                                 Spacer()
-                                Text("$\(vegetable.price, specifier: "%.2f")")
+                                if let unit = vegetable.unit {
+                                    Text("$\(vegetable.price, specifier: "%.2f")/\(unit)")
+                                } else {
+                                    Text("$\(vegetable.price, specifier: "%.2f")")
+                                }
                             }
                             Text(vegetable.sname)
                                 .frame(maxWidth: .infinity, alignment: .leading)
