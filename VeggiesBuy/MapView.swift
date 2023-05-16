@@ -83,6 +83,7 @@ class ViewMapModel: ObservableObject {
 
 struct MapView: View {
     @StateObject var viewModelMap = ViewMapModel()
+    @State private var searchText = ""
     @State private var selectedAnnotation: Supermarket? = nil
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     @State private var isShowingAlert = false
@@ -97,10 +98,19 @@ struct MapView: View {
                                 .resizable()
                                 .frame(width: 10, height: 32)
                                 .foregroundColor(.red)
+                            ZStack {
+                                
+                                Rectangle()
+                                    .foregroundColor(.blue)
+                                Text(supermarket.sname)
+                                    //.foregroundColor(.primary)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 14))
+                                    .lineLimit(1)
+                                    .truncationMode(.head)
+                            }
                             
-                            //Text(supermarket.sname)
-                                //.foregroundColor(.primary)
-                                //.bold()
                         }
                         .onTapGesture {
                             selectedAnnotation = supermarket
@@ -109,6 +119,7 @@ struct MapView: View {
                     }
                 }
             }
+            .searchable(text: $searchText, prompt: "Search")
             .edgesIgnoringSafeArea(.top)
             .alert(isPresented: $isShowingAlert) {
                 guard let selectedAnnotation = selectedAnnotation else {
@@ -117,9 +128,10 @@ struct MapView: View {
                 
                 return Alert(
                     title: Text(selectedAnnotation.sname),
-                    message: Text(selectedAnnotation.saddress),
-                    primaryButton: .default(Text("Back to Map")),
-                    secondaryButton: .default(Text("Go Home"), action: {
+                    message:
+                        Text(selectedAnnotation.slatitude),
+                    primaryButton: .default(Text("Report Mismatch")),
+                    secondaryButton: .default(Text("Back to Map"), action: {
                         // Perform action to go to Home view
                     })
                 )

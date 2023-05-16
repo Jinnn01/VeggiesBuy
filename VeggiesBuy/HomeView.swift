@@ -37,6 +37,17 @@ struct Store: Hashable, Codable {
 // fetch store names
 class ViewModel: ObservableObject {
     @Published var vegetables: [Vegetable] = []
+    @Published var searchQuery: String = ""
+    
+    var filteredVegetables: [Vegetable] {
+        if searchQuery.isEmpty {
+            return vegetables
+        } else {
+            return vegetables.filter { vegetable in
+                vegetable.vname.localizedCaseInsensitiveContains(searchQuery)
+            }
+        }
+    }
     
     //http://localhost:5000/api/items
     func fetch() {
@@ -55,6 +66,7 @@ class ViewModel: ObservableObject {
             // convert to JSON
             do {
                 let vegetables = try JSONDecoder().decode([Vegetable].self, from: data)
+                
                 DispatchQueue.main.async {
                     self?.vegetables = vegetables
                 }
@@ -69,14 +81,14 @@ class ViewModel: ObservableObject {
 
 struct HomeView: View {
     @StateObject var viewModel = ViewModel()
-    @State private var searchText = ""
+    //@State private var searchQuery = ""
     
     var body: some View {
         NavigationView {
             VStack {
                 
                 List {
-                    ForEach(viewModel.vegetables, id: \.self) { vegetable in
+                    ForEach(viewModel.filteredVegetables, id: \.self) { vegetable in
                         HStack {
                             Text(vegetable.vname)
                                 .bold()
@@ -87,10 +99,8 @@ struct HomeView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, prompt: "Search")
+            .searchable(text: $viewModel.searchQuery, prompt: "Search")
             .navigationBarTitle("Home")
-            // from the iosacademy tutorial
-            
             .onAppear {
                 viewModel.fetch()
             }
