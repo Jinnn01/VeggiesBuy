@@ -12,7 +12,6 @@ import VisionKit
 class AddItemModel: ObservableObject {
     @Published var vegetables: [Vegetable] = []
     
-    //http://localhost:5000/api/items
     func fetch() {
         //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
             //return
@@ -131,23 +130,6 @@ struct UploadView: View {
                             TextField("Supermarket Name", text: $supermarketName)
                         }
                     }
-                    /*
-                    VStack {
-                        Spacer()
-                        Button(action: {
-                            isShowingScanner = true
-                        }) {
-                            Text("Scan Receipt")
-                                .font(.headline)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color(UIColor(hex: "#DA7843")))
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
-                        .padding(16)
-                    }
-                    .padding(.bottom, 30)*/
                     .sheet(isPresented: $isShowingScanner, onDismiss: {
                         // Handle dismiss action if needed
                     }) {
