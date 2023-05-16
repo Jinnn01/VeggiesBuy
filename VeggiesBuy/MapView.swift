@@ -102,26 +102,40 @@ struct MapView: View {
             ZStack {
                 Map(coordinateRegion: $mapRegion, annotationItems: filteredVegetablesMap) { vegetableMap in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: Double(vegetableMap.slatitude) ?? 0.0, longitude: Double(vegetableMap.slongitude) ?? 0.0)) {
-                        VStack {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(Color(UIColor(hex: "#DA7843")))
-                                    .frame(width: 60, height: 24)
-                                    .cornerRadius(8)
-                                    /*
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.black, lineWidth: 1)
-                                    )*/
-                                Text("$\(String(format: "%.2f", vegetableMap.price))")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 14, weight: .bold))
+                        if searchQuery.isEmpty {
+                            // Custom annotation for sname
+                            Text(vegetableMap.sname)
+                                .foregroundColor(.white)
+                                .font(.system(size: 14, weight: .bold))
+                                .padding(6)
+                                .background(Color.blue)
+                                .cornerRadius(8)
+                                /*
+                                .onTapGesture {
+                                    selectedAnnotation = vegetableMap
+                                    isShowingAlert = true
+                                }*/
+                        } else {
+                            VStack {
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(Color(UIColor(hex: "#DA7843")))
+                                        .frame(width: 60, height: 24)
+                                        .cornerRadius(8)
+                                        /*
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(Color.black, lineWidth: 1)
+                                        )*/
+                                    Text("$\(String(format: "%.2f", vegetableMap.price))")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 14, weight: .bold))
+                                }
                             }
-                        }
-
-                        .onTapGesture {
-                            selectedAnnotation = vegetableMap
-                            isShowingAlert = true
+                            .onTapGesture {
+                                selectedAnnotation = vegetableMap
+                                isShowingAlert = true
+                            }
                         }
                     }
                 }
@@ -161,29 +175,7 @@ struct MapView: View {
             }
         }
     }
-    
-    struct ModalView: View {
-        let selectedAnnotation: VegetableMap
-        @Binding var isShowingModal: Bool
 
-        var body: some View {
-            VStack {
-                Text(selectedAnnotation.sname)
-                Text(selectedAnnotation.slatitude)
-
-                Button("Report Mismatch") {
-                    // Perform action for reporting mismatch
-                }
-                .padding()
-
-                Button("Back to Map") {
-                    isShowingModal = false
-                }
-                .padding()
-            }
-        }
-    }
-    
     struct MapView_Previews: PreviewProvider {
         static var previews: some View {
             MapView()
