@@ -45,6 +45,13 @@ struct Supermarket: Hashable, Codable, Identifiable {
     let saddress: String
 }*/
 
+func getTextWidth(_ text: String) -> CGFloat {
+    let font = UIFont.systemFont(ofSize: 14, weight: .bold)
+    let attributes = [NSAttributedString.Key.font: font]
+    let size = (text as NSString).size(withAttributes: attributes)
+    return ceil(size.width) + 12 // Adjust padding as needed
+}
+
 class ViewMapModel: ObservableObject {
     @Published var vegetablesMap: [VegetableMap] = []
     
@@ -104,12 +111,20 @@ struct MapView: View {
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: Double(vegetableMap.slatitude) ?? 0.0, longitude: Double(vegetableMap.slongitude) ?? 0.0)) {
                         if searchQuery.isEmpty {
                             // Custom annotation for sname
-                            Text(vegetableMap.sname)
-                                .foregroundColor(.white)
-                                .font(.system(size: 14, weight: .bold))
-                                .padding(6)
-                                .background(Color.blue)
-                                .cornerRadius(8)
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(Color(UIColor(hex: "#19AA5C")))
+                                    .frame(width: getTextWidth(vegetableMap.sname.components(separatedBy: " ").first ?? ""), height: 24)
+                                    .cornerRadius(8)
+                                Text(vegetableMap.sname.components(separatedBy: " ").first ?? "")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 14, weight: .bold))
+                                    //.padding(4)
+                            }
+
+                            
+                                //.background(Color.blue)
+                                //.cornerRadius(8)
                                 /*
                                 .onTapGesture {
                                     selectedAnnotation = vegetableMap
