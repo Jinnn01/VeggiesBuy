@@ -8,6 +8,8 @@
 import SwiftUI
 import MapKit
 
+
+
 extension UIColor {
     convenience init(hex: String) {
         let scanner = Scanner(string: hex)
@@ -83,15 +85,26 @@ class ViewMapModel: ObservableObject {
 
 struct MapView: View {
     @StateObject var viewModelMap = ViewMapModel()
-    @State private var searchText = ""
+    @State private var searchQuery = ""
     @State private var selectedAnnotation: Supermarket? = nil
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     @State private var isShowingAlert = false
+    @Environment(\.colorScheme) var colorScheme
+    
+    var filteredSupermarkets: [Supermarket] {
+        if searchQuery.isEmpty {
+            return viewModelMap.supermarkets
+        } else {
+            return viewModelMap.supermarkets.filter { supermarket in
+                supermarket.sname.localizedCaseInsensitiveContains(searchQuery)
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
             ZStack {
-                Map(coordinateRegion: $mapRegion, annotationItems: viewModelMap.supermarkets) { supermarket in
+                Map(coordinateRegion: $mapRegion, annotationItems: filteredSupermarkets) { supermarket in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: Double(supermarket.slatitude) ?? 0.0, longitude: Double(supermarket.slongitude) ?? 0.0)) {
                         VStack {
                             Image(systemName: "mappin")
@@ -118,8 +131,22 @@ struct MapView: View {
                         }
                     }
                 }
+                VStack {
+                    TextField("Search vegetables", text: $searchQuery)
+                        .padding()
+                        .background(colorScheme == .dark ? Color.black : Color.white)
+                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                        .cornerRadius(8)
+                        .padding(.horizontal)
+                        .offset(y: 60)
+                        .shadow(radius: 4)
+                        //.accentColor(.white)
+                        //.background(Color(UIColor.systemBackground))
+                    Spacer()
+                }
+                
             }
-            .searchable(text: $searchText, prompt: "Search")
+            //.searchable(text: $searchQuery, prompt: "Search")
             .edgesIgnoringSafeArea(.top)
             .alert(isPresented: $isShowingAlert) {
                 guard let selectedAnnotation = selectedAnnotation else {
