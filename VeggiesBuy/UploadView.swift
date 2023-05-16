@@ -106,7 +106,6 @@ struct UploadView: View {
     @State private var vegetablePrice = ""
     @State private var vegetableUnit = ""
     @State private var supermarketName = ""
-    @State private var supermarketLocation = ""
     @State private var isShowingAlert = false
     
     // Document scanning
@@ -130,10 +129,9 @@ struct UploadView: View {
                         
                         Section(header: Text("Supermarket Details")) {
                             TextField("Supermarket Name", text: $supermarketName)
-                            TextField("Supermarket Location", text: $supermarketLocation)
                         }
                     }
-                    
+                    /*
                     VStack {
                         Spacer()
                         Button(action: {
@@ -149,7 +147,7 @@ struct UploadView: View {
                         }
                         .padding(16)
                     }
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 30)*/
                     .sheet(isPresented: $isShowingScanner, onDismiss: {
                         // Handle dismiss action if needed
                     }) {
@@ -158,9 +156,24 @@ struct UploadView: View {
                 }
             }
             .navigationBarTitle("Upload")
-            .navigationBarItems(trailing:
-                Button("Save", action: saveVegItem)
-            )
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        saveVegItem()
+                    }) {
+                        Text("Save")
+                            .font(.headline)
+                    }
+                }
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Button(action: {
+                        isShowingScanner = true
+                    }) {
+                        Image(systemName: "camera.fill")
+                            .imageScale(.large)
+                    }
+                }
+            }
         }
         .alert(isPresented: $isShowingAlert) {
             Alert(title: Text("Success"), message: Text("Vegetable successfully saved!"), dismissButton: .default(Text("OK")))
