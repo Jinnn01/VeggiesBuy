@@ -9,6 +9,9 @@ from resources.store import blp as StoreBlueprint
 from resources.user import blp as UserBlueprint
 from datetime import datetime
 # from processdata import processdata
+from resources.ocr_endpoint import  blp as ocr_endpoint
+# from models import scrape_scheduler
+
 
 
 def create_app(db_url=None):
@@ -108,9 +111,13 @@ def create_app(db_url=None):
         db.session.commit()
 
 
+        # # starting webscraping scheduler
+        # scrape_scheduler.scrape_thread()
 
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
     api.register_blueprint(UserBlueprint)
+    # api.register_blueprint(UploadBlueprint)
+    api.register_blueprint(ocr_endpoint)
 
     return app
