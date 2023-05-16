@@ -25,39 +25,31 @@ extension UIColor {
     }
 }
 
-struct Location: Identifiable {
+struct VegetableMap: Hashable, Codable, Identifiable {
     let id = UUID()
-    let name: String
-    let coordinate: CLLocationCoordinate2D
-}
-/*
-struct VegetableMap: Hashable, Codable {
     let sname: String
     let vname: String
     let price: Float
-    let unit: String
+    //let unit: String
     let slatitude: String
     let slongitude: String
     //let image: String
-}*/
+}
 
-
+/*
 struct Supermarket: Hashable, Codable, Identifiable {
     let id = UUID()
     let sname: String
     let slatitude: String
     let slongitude: String
     let saddress: String
-}
+}*/
 
 class ViewMapModel: ObservableObject {
-    @Published var supermarkets: [Supermarket] = []
-    //@State private var supermarkets: [Supermarket] = []
+    @Published var vegetablesMap: [VegetableMap] = []
     
     func fetch() {
-        //guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
-            //return
-        guard let url = URL(string: "http://localhost:5006/store") else {
+        guard let url = URL(string: "http://localhost:5006/item") else {
             return
         }
         
@@ -69,9 +61,9 @@ class ViewMapModel: ObservableObject {
             
             // convert to JSON
             do {
-                let supermarkets = try JSONDecoder().decode([Supermarket].self, from: data)
+                let vegetablesMap = try JSONDecoder().decode([VegetableMap].self, from: data)
                 DispatchQueue.main.async {
-                    self?.supermarkets = supermarkets
+                    self?.vegetablesMap = vegetablesMap
                 }
             }
             catch {
@@ -85,26 +77,31 @@ class ViewMapModel: ObservableObject {
 struct MapView: View {
     @StateObject var viewModelMap = ViewMapModel()
     @State private var searchQuery = ""
-    @State private var selectedAnnotation: Supermarket? = nil
+    @State private var selectedAnnotation: VegetableMap? = nil
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     @State private var isShowingAlert = false
+    @State private var isShowingModal = false
     @Environment(\.colorScheme) var colorScheme
     
-    var filteredSupermarkets: [Supermarket] {
+    var filteredVegetablesMap: [VegetableMap] {
         if searchQuery.isEmpty {
-            return viewModelMap.supermarkets
+            return viewModelMap.vegetablesMap
         } else {
-            return viewModelMap.supermarkets.filter { supermarket in
-                supermarket.sname.localizedCaseInsensitiveContains(searchQuery)
+            return viewModelMap.vegetablesMap.filter { vegetableMap in
+                vegetableMap.sname.localizedCaseInsensitiveContains(searchQuery)
             }
         }
+    }
+    
+    var firstFilteredVegetableMap: VegetableMap? {
+        filteredVegetablesMap.first
     }
     
     var body: some View {
         NavigationView {
             ZStack {
-                Map(coordinateRegion: $mapRegion, annotationItems: filteredSupermarkets) { supermarket in
-                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: Double(supermarket.slatitude) ?? 0.0, longitude: Double(supermarket.slongitude) ?? 0.0)) {
+                Map(coordinateRegion: $mapRegion, annotationItems: filteredVegetablesMap) { vegetableMap in
+                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: Double(vegetableMap.slatitude) ?? 0.0, longitude: Double(vegetableMap.slongitude) ?? 0.0)) {
                         VStack {
                             Image(systemName: "mappin")
                                 .resizable()
@@ -114,18 +111,18 @@ struct MapView: View {
                                 
                                 Rectangle()
                                     .foregroundColor(.blue)
-                                Text(supermarket.sname)
+                                Text(vegetableMap.vname)
                                     //.foregroundColor(.primary)
                                     .bold()
                                     .foregroundColor(.white)
                                     .font(.system(size: 14))
-                                    .lineLimit(1)
-                                    .truncationMode(.tail)
+                                    //.lineLimit(1)
+                                    //.truncationMode(.tail)
                             }
                             
                         }
                         .onTapGesture {
-                            selectedAnnotation = supermarket
+                            selectedAnnotation = vegetableMap
                             isShowingAlert = true
                         }
                     }
@@ -153,18 +150,41 @@ struct MapView: View {
                 }
                 
                 return Alert(
-                    title: Text(selectedAnnotation.sname),
+                    title: Text(selectedAnnotation.vname.capitalized),
                     message:
-                        Text(selectedAnnotation.slatitude),
-                    primaryButton: .default(Text("Report Mismatch")),
+                        Text(selectedAnnotation.sname +
+                             "\nPrice: " + "$\(selectedAnnotation.price)" +
+                             "\nLatitude: " + selectedAnnotation.slatitude + "\nLongitude: " + selectedAnnotation.slongitude),
+                    primaryButton: .default(Text("Report Mismatch").foregroundColor(.red)),
                     secondaryButton: .default(Text("Back to Map"), action: {
                         // Perform action to go to Home view
                     })
                 )
             }
-            //.navigationBarTitle("Stores")
             .onAppear {
                 viewModelMap.fetch()
+            }
+        }
+    }
+    
+    struct ModalView: View {
+        let selectedAnnotation: VegetableMap
+        @Binding var isShowingModal: Bool
+
+        var body: some View {
+            VStack {
+                Text(selectedAnnotation.sname)
+                Text(selectedAnnotation.slatitude)
+
+                Button("Report Mismatch") {
+                    // Perform action for reporting mismatch
+                }
+                .padding()
+
+                Button("Back to Map") {
+                    isShowingModal = false
+                }
+                .padding()
             }
         }
     }
