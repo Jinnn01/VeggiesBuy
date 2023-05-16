@@ -119,17 +119,29 @@ struct UploadView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 } else {
-                    Form {
-                        Section(header: Text("Vegetable Details")) {
-                            TextField("Vegetable Name", text: $vegetableName)
-                            TextField("Vegetable Price", text: $vegetablePrice)
-                            TextField("Vegetable Unit", text: $vegetableUnit)
+                    
+                    VStack {
+                        Form {
+                            Section(header: Text("Vegetable Details")) {
+                                TextField("Vegetable Name", text: $vegetableName)
+                                TextField("Vegetable Price", text: $vegetablePrice)
+                                TextField("Vegetable Unit", text: $vegetableUnit)
+                            }
+                            
+                            Section(header: Text("Supermarket Details"), footer: Text("You can either manually enter the item details with the form above, or tap the Camera icon in the top-left corner to open the OCR scanner.")) {
+                                TextField("Supermarket Name", text: $supermarketName)
+                            }
                         }
-                        
-                        Section(header: Text("Supermarket Details")) {
-                            TextField("Supermarket Name", text: $supermarketName)
-                        }
+                        //.padding(.top, 10)
+                        /*
+                        Text("You can either manually enter the item details with the form above, or tap the Camera icon in the top-left corner to open the OCR scanner.\n\nThe OCR feature will read your supermarket receipt, fetching the item and price details which you can verify before submitting.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 20)*/
                     }
+                    .background(Color(.systemBackground))
+
+
                     .sheet(isPresented: $isShowingScanner, onDismiss: {
                         // Handle dismiss action if needed
                     }) {
@@ -143,7 +155,7 @@ struct UploadView: View {
                     Button(action: {
                         saveVegItem()
                     }) {
-                        Text("Save")
+                        Text("Submit")
                             .font(.headline)
                     }
                 }
@@ -158,13 +170,13 @@ struct UploadView: View {
             }
         }
         .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text("Success"), message: Text("Vegetable successfully saved!"), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Success"), message: Text("Vegetable successfully submitted!"), dismissButton: .default(Text("OK")))
         }
     }
     
     func saveVegItem() {
         isShowingAlert = true
-        print("Vegetable item saved")
+        print("Vegetable item submitted!")
     }
 }
 
