@@ -89,17 +89,23 @@ struct HomeView: View {
                 
                 List {
                     ForEach(viewModel.filteredVegetables, id: \.self) { vegetable in
-                        HStack {
-                            Text(vegetable.vname)
-                                .bold()
-                            Spacer()
-                            Text("$\(vegetable.price, specifier: "%.2f")")
+                        VStack {
+                            HStack {
+                                Text(vegetable.vname.capitalized)
+                                    .bold()
+                                    .font(.system(size: 18))
+                                Spacer()
+                                Text("$\(vegetable.price, specifier: "%.2f")")
+                            }
+                            Text(vegetable.sname)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(3)
                         }
-                        .padding(3)
+                        
                     }
                 }
             }
-            .searchable(text: $viewModel.searchQuery, prompt: "Search")
+            .searchable(text: $viewModel.searchQuery, prompt: "Search vegetables")
             .navigationBarTitle("Home")
             .onAppear {
                 viewModel.fetch()
