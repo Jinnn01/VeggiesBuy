@@ -153,8 +153,7 @@ struct MapView: View {
                     title: Text(selectedAnnotation.vname.capitalized),
                     message:
                         Text(selectedAnnotation.sname +
-                             "\nPrice: " + "$\(selectedAnnotation.price)" +
-                             "\nLatitude: " + selectedAnnotation.slatitude + "\nLongitude: " + selectedAnnotation.slongitude),
+                             "\nPrice: " + String(format: "$%.2f", selectedAnnotation.price)),
                     primaryButton: .default(Text("Report Mismatch").foregroundColor(.red)),
                     secondaryButton: .default(Text("Back to Map"), action: {
                         // Perform action to go to Home view
