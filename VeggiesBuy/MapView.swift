@@ -30,7 +30,7 @@ struct VegetableMap: Hashable, Codable, Identifiable {
     let sname: String
     let vname: String
     let price: Float
-    //let unit: String
+    let unit: String?
     let slatitude: String
     let slongitude: String
     //let image: String
@@ -175,9 +175,15 @@ struct MapView: View {
                 
                 return Alert(
                     title: Text(selectedAnnotation.vname.capitalized),
-                    message:
-                        Text(selectedAnnotation.sname +
-                             "\nPrice: " + String(format: "$%.2f", selectedAnnotation.price)),
+                    message: {
+                        if selectedAnnotation.unit != nil {
+                            return Text(selectedAnnotation.sname + "\n")
+                                + Text("$\(selectedAnnotation.price, specifier: "%.2f")/\(selectedAnnotation.unit!)")
+                        } else {
+                            return Text(selectedAnnotation.sname + "\n")
+                                + Text("$\(selectedAnnotation.price, specifier: "%.2f")")
+                        }
+                    }(),
                     primaryButton: .destructive(Text("Report Mismatch")),
                     secondaryButton: .default(Text("Back to Map"), action: {
                         // Perform action to go to Home view
