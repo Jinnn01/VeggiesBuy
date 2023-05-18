@@ -33,23 +33,13 @@ struct VegetableMap: Hashable, Codable, Identifiable {
     let unit: String?
     let slatitude: String
     let slongitude: String
-    //let image: String
 }
-
-/*
-struct Supermarket: Hashable, Codable, Identifiable {
-    let id = UUID()
-    let sname: String
-    let slatitude: String
-    let slongitude: String
-    let saddress: String
-}*/
 
 func getTextWidth(_ text: String) -> CGFloat {
     let font = UIFont.systemFont(ofSize: 14, weight: .bold)
     let attributes = [NSAttributedString.Key.font: font]
     let size = (text as NSString).size(withAttributes: attributes)
-    return ceil(size.width) + 12 // Adjust padding as needed
+    return ceil(size.width) + 12
 }
 
 class ViewMapModel: ObservableObject {
@@ -119,17 +109,7 @@ struct MapView: View {
                                 Text(vegetableMap.sname.components(separatedBy: " ").first ?? "")
                                     .foregroundColor(.white)
                                     .font(.system(size: 14, weight: .bold))
-                                    //.padding(4)
                             }
-
-                            
-                                //.background(Color.blue)
-                                //.cornerRadius(8)
-                                /*
-                                .onTapGesture {
-                                    selectedAnnotation = vegetableMap
-                                    isShowingAlert = true
-                                }*/
                         } else {
                             VStack {
                                 ZStack {
@@ -137,11 +117,6 @@ struct MapView: View {
                                         .foregroundColor(Color(UIColor(hex: "#DA7843")))
                                         .frame(width: 60, height: 24)
                                         .cornerRadius(8)
-                                        /*
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.black, lineWidth: 1)
-                                        )*/
                                     Text("$\(String(format: "%.2f", vegetableMap.price))")
                                         .foregroundColor(.white)
                                         .font(.system(size: 14, weight: .bold))
@@ -186,7 +161,7 @@ struct MapView: View {
                     }(),
                     primaryButton: .destructive(Text("Report Mismatch")),
                     secondaryButton: .default(Text("Back to Map"), action: {
-                        // Perform action to go to Home view
+                        
                     })
                 )
             }
