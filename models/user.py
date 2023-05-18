@@ -11,6 +11,7 @@ class UserModel(db.Model):
     # can not insert null value as a name, unique = True => items have different name, if there is no unique, means, multiplate item name can be the same
     uname = db.Column(db.String(80), unique=False, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(80), unique=True, nullable=False)
     #     upload = db.relationship(
     #   "UploadModel", back_populates="stores", lazy="dynamic", cascade="all,delete")
     # upload = db.relationship(
