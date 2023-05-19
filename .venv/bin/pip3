@@ -1,4 +1,4 @@
-#!/Users/amber_xin/GithubProject/VeggiesBuy/.venv/bin/python3
+#!/Users/gabrielkomarnicki/Git/VeggiesBuy/.venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys

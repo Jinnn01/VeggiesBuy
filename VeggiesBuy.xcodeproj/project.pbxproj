@@ -23,6 +23,9 @@
 		8F7305922A07393900788F0D /* JSONManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7305912A07393900788F0D /* JSONManager.swift */; };
 		8F7305942A0740B900788F0D /* example.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7305932A0740B900788F0D /* example.json */; };
 		8F7305962A07587F00788F0D /* RewardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7305952A07587F00788F0D /* RewardsView.swift */; };
+		8FDC48892A0DBEDC00339E81 /* Vegetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDC48882A0DBEDC00339E81 /* Vegetable.swift */; };
+		8FDC488B2A0DBF4B00339E81 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDC488A2A0DBF4B00339E81 /* ModelData.swift */; };
+		8FDC488D2A0DC1C800339E81 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDC488C2A0DC1C800339E81 /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +65,10 @@
 		8F7305912A07393900788F0D /* JSONManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONManager.swift; sourceTree = "<group>"; };
 		8F7305932A0740B900788F0D /* example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example.json; sourceTree = "<group>"; };
 		8F7305952A07587F00788F0D /* RewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsView.swift; sourceTree = "<group>"; };
+		8F9742752A1366CD00CBBCB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8FDC48882A0DBEDC00339E81 /* Vegetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vegetable.swift; sourceTree = "<group>"; };
+		8FDC488A2A0DBF4B00339E81 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		8FDC488C2A0DC1C800339E81 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +119,7 @@
 		8F5894D52A04956D000E0BE6 /* VeggiesBuy */ = {
 			isa = PBXGroup;
 			children = (
+				8F9742752A1366CD00CBBCB9 /* Info.plist */,
 				8F5894D62A04956D000E0BE6 /* VeggiesBuyApp.swift */,
 				8F5894D82A04956D000E0BE6 /* ContentView.swift */,
 				8F58950B2A04D10D000E0BE6 /* UploadView.swift */,
@@ -125,6 +133,9 @@
 				8F5894DC2A04956E000E0BE6 /* Preview Content */,
 				8F7305912A07393900788F0D /* JSONManager.swift */,
 				8F7305932A0740B900788F0D /* example.json */,
+				8FDC48882A0DBEDC00339E81 /* Vegetable.swift */,
+				8FDC488A2A0DBF4B00339E81 /* ModelData.swift */,
+				8FDC488C2A0DC1C800339E81 /* ViewModel.swift */,
 			);
 			path = VeggiesBuy;
 			sourceTree = "<group>";
@@ -289,6 +300,9 @@
 				8F58950E2A04D607000E0BE6 /* ColorThemes.swift in Sources */,
 				8F5894E32A04956E000E0BE6 /* VeggiesBuy.xcdatamodeld in Sources */,
 				8F7305962A07587F00788F0D /* RewardsView.swift in Sources */,
+				8FDC48892A0DBEDC00339E81 /* Vegetable.swift in Sources */,
+				8FDC488B2A0DBF4B00339E81 /* ModelData.swift in Sources */,
+				8FDC488D2A0DC1C800339E81 /* ViewModel.swift in Sources */,
 				8F7305922A07393900788F0D /* JSONManager.swift in Sources */,
 				8F5895082A04CE8B000E0BE6 /* MapView.swift in Sources */,
 				8F58950A2A04D0D1000E0BE6 /* HomeView.swift in Sources */,
@@ -456,6 +470,7 @@
 				DEVELOPMENT_TEAM = 2FHR74M99L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VeggiesBuy/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -485,6 +500,7 @@
 				DEVELOPMENT_TEAM = 2FHR74M99L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VeggiesBuy/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
