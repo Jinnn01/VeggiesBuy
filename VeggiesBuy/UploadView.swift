@@ -8,6 +8,13 @@
 import SwiftUI
 import VisionKit
 
+struct VegetableUpload: Hashable, Codable {
+    let sname: String
+    let vname: String
+    let price: Float
+    let unit: String?
+}
+
 // add vegetable item
 class AddItemModel: ObservableObject {
     @Published var vegetables: [Vegetable] = []
