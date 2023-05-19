@@ -7,6 +7,7 @@ from models import StoreModel, ItemModel
 from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
 from resources.user import blp as UserBlueprint
+from resources.batch_upload import blp as batch_upload
 from datetime import datetime
 # from processdata import processdata
 from resources.ocr_endpoint import  blp as ocr_endpoint
@@ -119,5 +120,6 @@ def create_app(db_url=None):
     api.register_blueprint(UserBlueprint)
     # api.register_blueprint(UploadBlueprint)
     api.register_blueprint(ocr_endpoint)
+    api.register_blueprint(batch_upload)
 
     return app
