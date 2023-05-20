@@ -41,7 +41,8 @@ def date_locator(date_str):
 { sname, timestamp
     item -> array of { item, price, unit}
 """
-def batch_upload_data(sname, items, timestamp_dt=datetime.datetime.now):
+@blp.route('/batch_upload', methods=['POST'])
+def batch_upload_data(sname, items, timestamp_dt=datetime.datetime.now()):
     logging.debug("batch_upload function")
 
     # for each vegetable
@@ -66,7 +67,7 @@ def batch_upload_data(sname, items, timestamp_dt=datetime.datetime.now):
                 sql_item.unit = unit
             else:
                 sql_item.unit = 'kg'
-            sql_item.timestamp = timestamp_dt
+            sql_item.updateTime = timestamp_dt
         else:
             logging.debug(f'creating item: {vname}')
             item = ItemModel(vname=vname, price=vprice, unit=unit,
@@ -107,6 +108,3 @@ def ocr_upload():
     batch_upload_data(sname, items, timestamp_dt)
 
     return jsonify({'message': 'OCR upload successful'})
-
-
-

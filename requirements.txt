@@ -6,6 +6,8 @@ flask-sqlalchemy
 opencv-python-headless
 numpy
 pytesseract
-schedule
+APScheduler
 selenium
 webdriver-manager
+requests
+Pillow
