@@ -1,21 +1,17 @@
 import os
-import threading
-
-import schedule
 from flask import Flask
 from flask_smorest import Api
 from sqlalchemy import create_engine
 from db import db
-from models import StoreModel, ItemModel
+from models import StoreModel, ItemModel, scrape_scheduler
 from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
 from resources.user import blp as UserBlueprint
 from datetime import datetime
 # from processdata import processdata
 from resources.ocr_endpoint import  blp as ocr_endpoint
-from models import scrape_scheduler
 from resources.batch_upload import blp as batch_upload
-from models.scrape_scheduler import blp as web_scrap, c_conn, w_conn
+from models.scrape_scheduler import blp as web_scrap
 
 
 def create_app(db_url=None):
@@ -116,8 +112,8 @@ def create_app(db_url=None):
 
 
         # starting webscraping scheduler
-        scrape_scheduler.scrape_thread()
-        # scrape_scheduler.all_scheduled_job()
+        # scrape_scheduler.scrape_thread()
+        scrape_scheduler.all_scheduled_job()
 
 
 
