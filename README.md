@@ -14,7 +14,7 @@ VeggiesBuy offers the following key features to enhance your shopping experience
 To get started with VeggiesBuy, follow these steps:
 
 ### Front-end (SwiftUI)
-Clone the repository: `git clone https://github.com/veggiesbuy.git`
+Clone the repository: `git clone https://github.com/Jinnn01/VeggiesBuy.git`
 
 Open Xcode and navigate to the project folder.
 
