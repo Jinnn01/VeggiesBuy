@@ -24,7 +24,7 @@ The VeggiesBuy app will launch in the simulator or on your connected iOS device.
 ### Back-end (Python Flask)
 Ensure you have Python installed on your system. You can download it from the official Python website.
 
-Clone the repository: `git clone https://github.com/veggiesbuy.git`
+Clone the repository: `git clone https://github.com/Jinnn01/VeggiesBuy.git`
 
 Create a virtual environment (optional but recommended): python -m venv env
 
