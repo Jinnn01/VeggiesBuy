@@ -14,20 +14,21 @@ VeggiesBuy offers the following key features to enhance your shopping experience
 To get started with VeggiesBuy, follow these steps:
 
 ### Front-end (SwiftUI)
-Clone the repository: git clone https://github.com/veggiesbuy.git
+Clone the repository: `git clone https://github.com/veggiesbuy.git`
 Open Xcode and navigate to the project folder.
 Build and run the project in Xcode.
 The VeggiesBuy app will launch in the simulator or on your connected iOS device.
 
 ### Back-end (Python Flask)
 Ensure you have Python installed on your system. You can download it from the official Python website.
-Clone the repository: git clone https://github.com/veggiesbuy.git
+Clone the repository: `git clone https://github.com/veggiesbuy.git`
 Create a virtual environment (optional but recommended): python -m venv env
+
 Activate the virtual environment:
-On macOS/Linux: source env/bin/activate
-On Windows: .\env\Scripts\activate
-Install the required Python packages: pip install -r requirements.txt
-Start the Flask development server: python app.py
+On macOS/Linux: `source env/bin/activate`
+On Windows: `.\env\Scripts\activate`
+Install the required Python packages: `pip install -r requirements.txt`
+Start the Flask development server: `python app.py`
 
 ## Usage
 Once the application is up and running, you can begin using VeggiesBuy to compare vegetable prices and make informed purchasing decisions. Here are the main steps to follow:
