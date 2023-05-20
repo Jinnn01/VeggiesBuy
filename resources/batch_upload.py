@@ -41,7 +41,6 @@ def date_locator(date_str):
 { sname, timestamp
     item -> array of { item, price, unit}
 """
-
 @blp.route('/batch_upload', methods=['POST'])
 def batch_upload_data(sname, items, timestamp_dt=datetime.datetime.now()):
     logging.debug("batch_upload function")
@@ -59,7 +58,6 @@ def batch_upload_data(sname, items, timestamp_dt=datetime.datetime.now()):
 
         if sql_item:
             if timestamp_dt < sql_item.updateTime:
-                logging.debug(timestamp_dt)
                 logging.debug('provided entries are old')
                 continue
             logging.debug(f'updating item: {vname}')
@@ -110,6 +108,3 @@ def ocr_upload():
     batch_upload_data(sname, items, timestamp_dt)
 
     return jsonify({'message': 'OCR upload successful'})
-
-
-
