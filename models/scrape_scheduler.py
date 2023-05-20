@@ -1,8 +1,8 @@
-import threading
+
 import time
 
 import requests
-import schedule
+from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 
 from flask import jsonify, redirect
@@ -15,13 +15,12 @@ blp = Blueprint("web_scrap", __name__, description="Batch upload of items")
 
 
 # Create a lock for synchronization
-lock = threading.Lock()
 
 # coles webscraping
 @blp.route('/coles_scrap', methods=['POST'])
 def c_job():
     try:
-        # make sure complet chrome with display is installed inside the container
+        # make sure complete chrome with display is installed inside the container
         output = CS.c_scrape()
         # output = [[['coles wollongong', '200 crown street, wollongong'],
         #            [{'lebanese cucumbers': '5.90'}, {'fresh brown onions loose': '3.70'}, {'broccoli': '4.50'},
@@ -101,30 +100,7 @@ def w_job():
 
     return jsonify({'message': 'OCR upload unsuccessfull'})
 
-
-# scheduling job
-def all_scheduled_job():
-    #actual jobs
-    schedule.every().day.at("00:00").do(c_conn)
-    schedule.every().day.at("00:30").do(w_conn)
-
-    while True:
-        schedule.run_pending()
-        if not schedule.jobs:
-            time.sleep(3)
-            break
-
-
-# Create a new thread for running the scheduled job
-def scrape_thread():
-    thread1 = threading.Thread(target=all_scheduled_job)
-
-    # Start the thread
-    thread1.start()
-
-
 def c_conn():
-    lock.acquire()
     try:
         # make sure proper docker network config is set
         # Make the request to the desired endpoint - make sure url is right for the hosted container and port
@@ -139,10 +115,8 @@ def c_conn():
             logging.debug('Request failed')
     except Exception as e:
         logging.debug(e)
-    lock.release()
 
 def w_conn():
-    lock.acquire()
     try:
         # make sure proper docker network config is set
         # Make the request to the desired endpoint - make sure url is right for the hosted container and port
@@ -159,4 +133,18 @@ def w_conn():
             logging.debug('Request failed')
     except Exception as e:
         logging.debug(e)
-    lock.release()
+
+
+# scheduling job
+@blp.route('/start_schedule', methods=['POST'])
+def all_scheduled_job():
+
+    scheduler = BackgroundScheduler()
+
+    # Schedule the w_conn job to run at 12 am every day
+    scheduler.add_job(func=w_conn, trigger="cron", hour=0, minute=5)
+
+    # Schedule the c_conn job to run at 12 am every day
+    scheduler.add_job(func=c_conn, trigger="cron", hour=0, minute=25)
+
+    scheduler.start()
