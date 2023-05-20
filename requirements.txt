@@ -1,5 +1,0 @@
-flask
-flask-smorest
-python-dotenv
-flask-sqlalchemy
-
