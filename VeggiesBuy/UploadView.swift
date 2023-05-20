@@ -6,57 +6,185 @@
 //
 
 import SwiftUI
+import VisionKit
+
+struct VegetableUpload: Hashable, Codable {
+    let sname: String
+    let vname: String
+    let price: Float
+    let unit: String?
+}
+
+// add vegetable item
+class AddItemModel: ObservableObject {
+    @Published var vegetables: [Vegetable] = []
+    
+    func fetch() {
+        guard let url = URL(string: "http://localhost:5006/item") else {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _,
+            error in
+            guard let data = data, error == nil else {
+                return
+            }
+            
+            // convert to JSON
+            do {
+                let vegetables = try JSONDecoder().decode([Vegetable].self, from: data)
+                
+                DispatchQueue.main.async {
+                    self?.vegetables = vegetables
+                }
+            }
+            catch {
+                print(error)
+            }
+        }
+        task.resume()
+    }
+}
+
+struct DocumentScannerView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = VNDocumentCameraViewController
+    
+    @Binding var scannedImage: UIImage?
+    @Environment(\.presentationMode) var presentationMode
+    
+    func makeUIViewController(context: Context) -> VNDocumentCameraViewController {
+        let documentScannerViewController = VNDocumentCameraViewController()
+        documentScannerViewController.delegate = context.coordinator
+        return documentScannerViewController
+    }
+    
+    func updateUIViewController(_ uiViewController: VNDocumentCameraViewController, context: Context) {}
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
+        let parent: DocumentScannerView
+        
+        init(_ parent: DocumentScannerView) {
+            self.parent = parent
+        }
+        
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            guard scan.pageCount >= 1 else {
+                controller.dismiss(animated: true) {
+                    self.parent.presentationMode.wrappedValue.dismiss()
+                }
+                return
+            }
+            
+            let image = scan.imageOfPage(at: 0)
+            parent.scannedImage = image
+            
+            controller.dismiss(animated: true) {
+                self.parent.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        
+        func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
+            controller.dismiss(animated: true) {
+                self.parent.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
+            print("Document scanning failed with error: \(error)")
+            
+            controller.dismiss(animated: true) {
+                self.parent.presentationMode.wrappedValue.dismiss()
+            }
+        }
+    }
+}
+
 
 struct UploadView: View {
     
     @State private var vegetableName = ""
     @State private var vegetablePrice = ""
+    @State private var vegetableUnit = ""
     @State private var supermarketName = ""
-    @State private var supermarketLocation = ""
+    @State private var isShowingAlert = false
     
-    let marketName = ["ALDI", "Coles", "Woolworths"]
-    
-    @State private var selectedSupermarket = "ALDI"
+    // Document scanning
+    @State private var scannedImage: UIImage?
+    @State private var isShowingScanner = false
     
     var body: some View {
         NavigationView {
             ZStack {
-                Color.themeBackground
-                    .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                Form {
-                    Section(header: Text("Vegetable details")) {
-                        TextField("Vegetable Name", text: $vegetableName)
-                        TextField("Vegetable Price", text: $vegetablePrice)
-                    }
-                    Section(header: Text("Supermarket details")) {
-                        TextField("Supermarket Name", text: $supermarketName)
-                        
-                        Picker("Supermarket Name:", selection: $selectedSupermarket) {
-                            ForEach(marketName, id: \.self) {
-                                Text($0)
+                if let image = scannedImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } else {
+                    
+                    VStack {
+                        Form {
+                            Section(header: Text("Vegetable Details")) {
+                                TextField("Vegetable Name", text: $vegetableName)
+                                TextField("Vegetable Price", text: $vegetablePrice)
+                                TextField("Vegetable Unit", text: $vegetableUnit)
+                            }
+                            
+                            Section(header: Text("Supermarket Details"), footer: Text("You can either manually enter the item details with the form above, or tap the Camera icon in the top-left corner to open the OCR scanner.")) {
+                                TextField("Supermarket Name", text: $supermarketName)
                             }
                         }
-                        
-                        TextField("Supermarket Location", text: $supermarketLocation)
+                        //.padding(.top, 10)
+                        /*
+                        Text("You can either manually enter the item details with the form above, or tap the Camera icon in the top-left corner to open the OCR scanner.\n\nThe OCR feature will read your supermarket receipt, fetching the item and price details which you can verify before submitting.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 20)*/
+                    }
+                    .background(Color(.systemBackground))
+
+
+                    .sheet(isPresented: $isShowingScanner, onDismiss: {
+                        // Handle dismiss action if needed
+                    }) {
+                        DocumentScannerView(scannedImage: $scannedImage)
                     }
                 }
-                .navigationBarTitle("Upload")
-                .onTapGesture {
-                    hideKeyboard()
+            }
+            .navigationBarTitle("Upload")
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        saveVegItem()
+                    }) {
+                        Text("Submit")
+                            .font(.headline)
+                    }
                 }
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Button("Save", action: saveVegItem)
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Button(action: {
+                        isShowingScanner = true
+                    }) {
+                        Image(systemName: "camera.fill")
+                            .imageScale(.large)
                     }
                 }
             }
         }
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text("Success"), message: Text("Vegetable successfully submitted!"), dismissButton: .default(Text("OK")))
+        }
     }
     
     func saveVegItem() {
-        print("Vegetable item saved")
+        isShowingAlert = true
+        print("Vegetable item submitted!")
     }
 }
+
 
 struct UploadView_Previews: PreviewProvider {
     static var previews: some View {

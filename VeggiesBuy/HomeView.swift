@@ -7,21 +7,30 @@
 
 import SwiftUI
 
-/*
-// iosacademy tutorial
-struct Course: Hashable, Codable {
-    let name: String
-    let image: String
-}*/
+struct Vegetable: Hashable, Codable {
+    let sname: String
+    let vname: String
+    let price: Float
+    let unit: String?
+}
 
-/*
-// iosacademy tutorial
+// fetch store names
 class ViewModel: ObservableObject {
-    @Published var courses: [Course] = []
+    @Published var vegetables: [Vegetable] = []
+    @Published var searchQuery: String = ""
     
-    http://localhost:5000/api/items
+    var filteredVegetables: [Vegetable] {
+        if searchQuery.isEmpty {
+            return vegetables
+        } else {
+            return vegetables.filter { vegetable in
+                vegetable.vname.localizedCaseInsensitiveContains(searchQuery)
+            }
+        }
+    }
+    
     func fetch() {
-        guard let url = URL(string: "https://iosacademy.io/api/v1/courses/index.php") else {
+        guard let url = URL(string: "http://localhost:5006/item") else {
             return
         }
         
@@ -33,9 +42,10 @@ class ViewModel: ObservableObject {
             
             // convert to JSON
             do {
-                let courses = try JSONDecoder().decode([Course].self, from: data)
+                let vegetables = try JSONDecoder().decode([Vegetable].self, from: data)
+                
                 DispatchQueue.main.async {
-                    self?.courses = courses
+                    self?.vegetables = vegetables
                 }
             }
             catch {
@@ -44,69 +54,44 @@ class ViewModel: ObservableObject {
         }
         task.resume()
     }
-}*/
+}
 
 struct HomeView: View {
-    //@StateObject var viewModel = ViewModel()
-    @State private var searchText = ""
-    private var products : [Product] = Product.allProducts
-    let allProducts = ["Apple", "Banana", "Cucumber"]
+    @StateObject var viewModel = ViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
-                /*
+                
                 List {
-                    ForEach(viewModel.courses, id: \.self) { course in
-                        HStack {
-                            Image("")
-                                .frame(width: 120, height: 60)
-                                .background(Color.gray)
-                            
-                            
-                            Text(course.name)
-                                .bold()
+                    ForEach(viewModel.filteredVegetables, id: \.self) { vegetable in
+                        VStack {
+                            HStack {
+                                Text(vegetable.vname.capitalized)
+                                    .bold()
+                                    .font(.system(size: 18))
+                                Spacer()
+                                if let unit = vegetable.unit {
+                                    Text("$\(vegetable.price, specifier: "%.2f")/\(unit)")
+                                } else {
+                                    Text("$\(vegetable.price, specifier: "%.2f")")
+                                }
+                            }
+                            Text(vegetable.sname)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 1)
                         }
-                        .padding(3)
-                    }
-                }*/
-                
-                
-                List {
-                    // ideally the id should be unique
-                    ForEach(products, id: \.shopName) { product in
-                        Text("\(product.shopName)")
+                        
                     }
                 }
-                
-                /*
-                List {
-                    // ideally the id should be unique
-                    ForEach(filteredItems, id: \.self) { product in
-                        Text(product)
-                    }
-                }*/
-                
-                //LazyVGrid
             }
-            .searchable(text: $searchText, prompt: "Search")
+            .searchable(text: $viewModel.searchQuery, prompt: "Search vegetables")
             .navigationBarTitle("Home")
-            // from the iosacademy tutorial
-            /*
             .onAppear {
                 viewModel.fetch()
-            }*/
+            }
         }
     }
-    
-    var filteredItems: [String] {
-        if searchText.isEmpty {
-            return allProducts
-        } else {
-            return allProducts.filter { $0.localizedCaseInsensitiveContains(searchText)}
-        }
-    }
-
 }
 
 struct HomeView_Previews: PreviewProvider {
