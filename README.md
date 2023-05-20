@@ -26,7 +26,7 @@ Ensure you have Python installed on your system. You can download it from the of
 
 Clone the repository: `git clone https://github.com/Jinnn01/VeggiesBuy.git`
 
-Create a virtual environment (optional but recommended): python -m venv env
+Create a virtual environment (optional but recommended): `python -m venv env`
 
 Activate the virtual environment:
 
