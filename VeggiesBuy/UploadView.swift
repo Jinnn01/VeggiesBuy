@@ -138,12 +138,6 @@ struct UploadView: View {
                                 TextField("Supermarket Name", text: $supermarketName)
                             }
                         }
-                        //.padding(.top, 10)
-                        /*
-                        Text("You can either manually enter the item details with the form above, or tap the Camera icon in the top-left corner to open the OCR scanner.\n\nThe OCR feature will read your supermarket receipt, fetching the item and price details which you can verify before submitting.")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal, 20)*/
                     }
                     .background(Color(.systemBackground))
 
