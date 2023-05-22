@@ -78,6 +78,7 @@ struct MapView: View {
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -34.4110, longitude: 150.8948), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     @State private var isShowingAlert = false
     @State private var isShowingModal = false
+    @State private var isShowingUploadView = false
     @Environment(\.colorScheme) var colorScheme
     
     var filteredVegetablesMap: [VegetableMap] {
@@ -159,7 +160,9 @@ struct MapView: View {
                                 + Text("$\(selectedAnnotation.price, specifier: "%.2f")")
                         }
                     }(),
-                    primaryButton: .destructive(Text("Report Mismatch")),
+                    primaryButton: .destructive(Text("Report Mismatch"), action: {
+                            isShowingUploadView = true
+                        }),
                     secondaryButton: .default(Text("Back to Map"), action: {
                         
                     })
@@ -168,6 +171,14 @@ struct MapView: View {
             .onAppear {
                 viewModelMap.fetch()
             }
+            .background(
+                NavigationLink(
+                    destination: UploadView(),
+                    isActive: $isShowingUploadView,
+                    label: { EmptyView() }
+                )
+                .hidden()
+            )
         }
     }
 
