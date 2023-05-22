@@ -7,6 +7,7 @@
 
 import SwiftUI
 import VisionKit
+import Foundation
 
 struct VegetableUpload: Hashable, Codable {
     let sname: String
@@ -17,34 +18,37 @@ struct VegetableUpload: Hashable, Codable {
 
 // add vegetable item
 class AddItemModel: ObservableObject {
-    @Published var vegetables: [Vegetable] = []
+    @Published var vegetablesUpload: [VegetableUpload] = []
     
-    func fetch() {
-        guard let url = URL(string: "http://localhost:5006/item") else {
+    func save(_ vegetable: VegetableUpload) {
+        guard let url = URL(string: "http://localhost:5001/item") else {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _,
-            error in
-            guard let data = data, error == nil else {
+        // Convert vegetable to JSON data
+        guard let encodedData = try? JSONEncoder().encode(vegetable) else {
+            print("Failed to encode item details")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = encodedData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) { _, _, error in
+            if let error = error {
+                print("Error: \(error)")
                 return
             }
             
-            // convert to JSON
-            do {
-                let vegetables = try JSONDecoder().decode([Vegetable].self, from: data)
-                
-                DispatchQueue.main.async {
-                    self?.vegetables = vegetables
-                }
-            }
-            catch {
-                print(error)
-            }
+            // Data sent successfully
         }
+        
         task.resume()
     }
 }
+
 
 struct DocumentScannerView: UIViewControllerRepresentable {
     typealias UIViewControllerType = VNDocumentCameraViewController
@@ -153,7 +157,10 @@ struct UploadView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: {
-                        saveVegItem()
+                        Task {
+                            await saveVegItem()
+                        }
+                        
                     }) {
                         Text("Submit")
                             .font(.headline)
@@ -174,9 +181,16 @@ struct UploadView: View {
         }
     }
     
-    func saveVegItem() {
-        isShowingConfirmation = true
-        print("Vegetable item submitted!")
+    func saveVegItem() async {
+        let vegetable = VegetableUpload(
+            sname: supermarketName,
+            vname: vegetableName,
+            price: Float(vegetablePrice) ?? 0,
+            unit: vegetableUnit
+        )
+
+        let addItemModel = AddItemModel()
+        addItemModel.save(vegetable)
     }
 }
 
