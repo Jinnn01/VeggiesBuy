@@ -153,7 +153,10 @@ struct UploadView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: {
-                        saveVegItem()
+                        Task {
+                            await saveVegItem()
+                        }
+                        
                     }) {
                         Text("Submit")
                             .font(.headline)
@@ -174,9 +177,9 @@ struct UploadView: View {
         }
     }
     
-    func saveVegItem() {
+    func saveVegItem() async {
         isShowingConfirmation = true
-        print("Vegetable item submitted!")
+        //("Vegetable item submitted!")
     }
 }
 
