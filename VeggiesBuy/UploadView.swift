@@ -110,7 +110,8 @@ struct UploadView: View {
     @State private var vegetablePrice = ""
     @State private var vegetableUnit = ""
     @State private var supermarketName = ""
-    @State private var isShowingAlert = false
+    //@State private var isShowingAlert = false
+    @State private var isShowingConfirmation = false
     
     // Document scanning
     @State private var scannedImage: UIImage?
@@ -174,13 +175,13 @@ struct UploadView: View {
                 }
             }
         }
-        .alert(isPresented: $isShowingAlert) {
+        .alert(isPresented: $isShowingConfirmation) {
             Alert(title: Text("Success"), message: Text("Vegetable successfully submitted!"), dismissButton: .default(Text("OK")))
         }
     }
     
     func saveVegItem() {
-        isShowingAlert = true
+        isShowingConfirmation = true
         print("Vegetable item submitted!")
     }
 }
