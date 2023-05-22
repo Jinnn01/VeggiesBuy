@@ -20,7 +20,7 @@ class AddItemModel: ObservableObject {
     @Published var vegetables: [Vegetable] = []
     
     func fetch() {
-        guard let url = URL(string: "http://localhost:5006/item") else {
+        guard let url = URL(string: "http://localhost:5001/item") else {
             return
         }
         

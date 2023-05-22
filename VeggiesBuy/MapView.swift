@@ -46,7 +46,7 @@ class ViewMapModel: ObservableObject {
     @Published var vegetablesMap: [VegetableMap] = []
     
     func fetch() {
-        guard let url = URL(string: "http://localhost:5006/item") else {
+        guard let url = URL(string: "http://localhost:5001/item") else {
             return
         }
         
