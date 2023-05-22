@@ -1,110 +1,30 @@
-import uuid
-from flask import request
-from flask.views import MethodView
-from flask_smorest import Blueprint, abort
-from models import ItemModel
 from db import db
-from sqlalchemy import select
 from datetime import datetime
 
-from sqlalchemy.exc import SQLAlchemyError
-from schemas import ItemSchema, ItemUpdateSchema
 
-blp = Blueprint("item", __name__, description="Operation on items")
+# mapping between row in a table to a python class
+class ItemModel(db.Model):
+    # use a table called items
+    __tablename__ = "items"
+    # columns should be in this table
+    vid = db.Column(db.Integer, primary_key=True)
+    # can not insert null value as a name, unique = True => items have different name, if there is no unique, means, multiplate item name can be the same
+    vname = db.Column(db.String(80), unique=False, nullable=False)
+    price = db.Column(db.Float(precision=2), unique=False, nullable=False)
+    unit = db.Column(db.String(80),unique=False)
+    # store id as a foreignkey
+    sname = db.Column(db.String(80), db.ForeignKey(
+        "stores.sname"), unique=False, nullable=False)
+    updateTime = db.Column(db.DateTime, default=datetime.now)
 
+    # store variable with storemodel object, whose id will match the foreignkey
+    # link item with stores, sid as a foreign key
 
-@blp.route("/item/<int:item_id>")
-class item(MethodView):
-    @blp.response(200, ItemSchema)
-    def get(self, item_id):
-        # Base on the item id to retrive data, item id is a *primary key*
-        # not found return 404 error
-        item = ItemModel.query.get_or_404(item_id)
-        return item
-    # delete an item
+    # TODO: 单位
+    stores = db.relationship("StoreModel", back_populates="items")
 
-    def delete(self, item_id):
-        item = ItemModel.query.get_or_404(item_id)
-        db.session.delete(item)
-        db.session.commit()
-        return {"message": "Item deleted"}
+    # vdescr = db.Column(db.String, nullable=True)
 
-    @blp.arguments(ItemUpdateSchema)
-    @blp.response(200, ItemSchema)
-    # update an item, item_data from input
-    def put(self, item_data, item_id):
-        item = ItemModel.query.get(item_id)
-        if item:
-            # what if the item does not exist?
-            # if exist, update; if not create it
-            item.price = item_data["price"]
-        else:
-            # item = ItemModel(**item_data)
-            item = ItemModel(vid=item_id, **item_data)
-
-            # ; not working, set the
-
-        db.session.add(item)
-        db.session.commit()
-
-
-@blp.route("/item")
-class itemlist(MethodView):
-
-    # create a new item
-    @blp.arguments(ItemSchema)
-    @blp.response(201, ItemSchema)
-    # item_dara is in json value validated by itemschema
-    def post(self, item_data):
-        # turn dict into key word arguments, not put into database yet
-        item = ItemModel(**item_data)
-        try:
-            # not in db yet
-            db.session.add(item)
-            # in the db
-            db.session.commit()
-        except SQLAlchemyError:
-            abort(500, message="An error occurred while inserting a item")
-
-        return item
-    # many = True -> return an item list
-
-    @blp.response(200, ItemSchema(many=True))
-    # get item list
-    def get(self):
-        return ItemModel.query.all()
-
-
-@blp.route("/item/<string:vname>")
-class itemView(MethodView):
-    @blp.response(200, ItemSchema(many=True))
-    def get(self, vname):
-        # Base on the item name to retrieve data, item name is a *unique field*
-        # not found; return 404 error
-        item = ItemModel.query.filter(ItemModel.vname == vname).all()
-        if item:
-            return item
-        else:
-            abort(404, message="Veggies not found")
-
-    @blp.arguments(ItemUpdateSchema)
-    @blp.response(200, ItemSchema)
-    # update an item, item_data from input
-    def put(self, item_data, vname):
-        # Find the item based on vname and sname
-        item = ItemModel.query.filter_by(
-            vname=vname, sname=item_data["sname"], unit=item_data["unit"]).first()
-
-        if item:
-            # Check if the input price is different from the price in the database
-            if item_data["price"] != item.price:
-                # Update the item's price and updatetime
-                item.price = item_data["price"]
-                item.updateTime = datetime.now()  # Update with the current timestamp
-                db.session.commit()
-
-                return {"message": "Item price has been updated"}
-            else:
-                return {"message": "Item price is already up to date"}
-        else:
-            abort(404, message="Veggies not found")
+    # upload
+    # upload = db.relationship(
+    #   "UploadModel", back_populates="items", lazy="dynamic", cascade="all,delete")
